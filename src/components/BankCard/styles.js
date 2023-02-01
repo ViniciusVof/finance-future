@@ -6,7 +6,27 @@ export const Wrapper = styled.section`
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
 `;
+export const WrapperList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
 
+export const CardList = styled.li`
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding: 13px;
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+export const BalanceList = styled(A.Typography.Paragraph)`
+  text-align: center;
+`;
 export const Card = styled(A.Card)`
   display: flex;
   flex-direction: column;

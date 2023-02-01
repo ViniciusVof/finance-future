@@ -34,6 +34,7 @@ export function EntriesFlow({ data, type }) {
 
       <A.List
         itemLayout="horizontal"
+        locale={{ emptyText: 'Nenhum lançamento encontrado' }}
         dataSource={data
           .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
           .filter(
@@ -49,9 +50,6 @@ export function EntriesFlow({ data, type }) {
               <A.Button
                 type="secondary"
                 icon={item.realize ? <I.LikeOutlined /> : <I.LikeFilled />}
-                // onClick={() => {
-                //   setPaid(!paid);
-                // }}
               />,
             ]}
           >

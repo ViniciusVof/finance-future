@@ -15,7 +15,7 @@ export const menuRoutes = [
   {
     label: 'Configurações',
     key: 'sub4',
-    icon: <I.DollarCircleOutlined />,
+    icon: <I.SettingOutlined />,
     children: [
       { label: 'Categorias', key: '/categories' },
       { label: 'Meu Perfil', key: '/my-profile' },

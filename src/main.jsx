@@ -12,6 +12,9 @@ const GlobalStyle = createGlobalStyle`
   .ant-typography {
     margin-bottom: 0 !important;
   }
+  .ant-card{
+    border-radius: 3px;
+  }
   `;
 
 export function Main() {

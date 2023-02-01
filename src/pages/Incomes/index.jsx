@@ -8,7 +8,6 @@ export function Incomes() {
     <Components.Layout titleSEO="Receitas">
       <A.Card>
         <Components.EntriesFlow data={data} type="incomes" />
-        saldo
       </A.Card>
     </Components.Layout>
   );

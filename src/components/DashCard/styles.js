@@ -2,8 +2,8 @@ import * as A from 'antd';
 import styled from 'styled-components';
 
 export const Card = styled(A.Card)`
-  gap: 20px;
   display: flex;
+  flex-direction: column;
   .ant-card-body {
     padding: 0;
     width: 100%;
@@ -22,5 +22,7 @@ export const Content = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
   padding: 12px;
+  background-color: #fff;
 `;
