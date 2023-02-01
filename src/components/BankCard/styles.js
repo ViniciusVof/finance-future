@@ -8,12 +8,12 @@ export const Wrapper = styled.section`
 `;
 
 export const Card = styled(A.Card)`
-  padding: 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 20px;
+  text-align: center;
 `;
 
 export const Balance = styled(A.Typography.Title)`
