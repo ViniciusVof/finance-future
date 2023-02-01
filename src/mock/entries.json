@@ -1,56 +1,47 @@
 [
   {
-    "title": "Spotify",
+    "title": "Prestação de Serviço",
     "account": "Conta Pessoal Operações",
-    "amount": 11231.9,
-    "category": "Prestação de Serviço",
+    "amount": 11000.0,
+    "category": "Prestação de Serviços",
     "type": "incomes",
     "realize": true,
-    "dueDate": "01/02/2023"
+    "dueDate": "15/01/2023"
   },
   {
-    "title": "Ant Design 2",
-    "account": "Itaú",
-    "category": "Prestação de Serviço",
-    "amount": 12.99,
+    "title": "Prestação de Serviço",
+    "account": "Conta Pessoal Operações",
+    "amount": 11000.0,
+    "category": "Prestação de Serviços",
     "type": "incomes",
     "realize": false,
-    "dueDate": "02/01/2023"
+    "dueDate": "15/02/2023"
   },
   {
-    "title": "Ant Design Title 3 Title",
-    "account": "Itaú",
-    "category": "Prestação de Serviço",
-    "amount": 12.99,
-    "type": "incomes",
-    "realize": true,
-    "dueDate": "04/02/2023"
-  },
-  {
-    "title": "Ant Title 4",
-    "account": "Bradesco",
-    "category": "Prestação de Serviço",
-    "amount": 12.99,
-    "realize": true,
+    "title": "Salário Vinicius",
+    "account": "Conta Pessoal Operações",
+    "category": "Pró-labore",
+    "amount": 9924.09,
     "type": "expenses",
-    "dueDate": "01/01/2023"
-  },
-  {
-    "title": "Ant Title  asdfasdf 4",
-    "account": "Bradesco",
-    "category": "Prestação de Serviço",
-    "amount": 1212.99,
     "realize": true,
-    "type": "expenses",
-    "dueDate": "02/02/2023"
+    "dueDate": "15/01/2023"
   },
   {
-    "title": "Ant Title  asdfasdf 4",
-    "account": "Itaú",
-    "category": "Prestação de Serviço",
-    "amount": 121.99,
+    "title": "Salário Vinicius",
+    "account": "Conta Pessoal Operações",
+    "category": "Pró-labore",
+    "amount": 9656.34,
+    "type": "expenses",
     "realize": false,
+    "dueDate": "15/02/2023"
+  },
+  {
+    "title": "Monitor",
+    "account": "Conta Pessoal Operações",
+    "category": "Pró-labore",
+    "amount": 129,
     "type": "expenses",
-    "dueDate": "01/02/2023"
+    "realize": false,
+    "dueDate": "15/01/2023"
   }
 ]

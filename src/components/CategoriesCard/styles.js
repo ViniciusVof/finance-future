@@ -43,7 +43,6 @@ export const SubCategories = styled.ul`
 
 export const Category = styled.li`
   padding: 7px 5px;
-  border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
   color: #444;
 `;

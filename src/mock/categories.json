@@ -12,13 +12,68 @@
       },
       {
         "id": 3,
-        "parentId": 1,
-        "title": "Filha"
+        "title": "Despesas Contábeis"
       },
       {
         "id": 4,
-        "parentId": 1,
-        "title": "Filha2"
+        "title": "Distribuição de Lucro"
+      },
+      {
+        "id": 5,
+        "title": "Impostos e Contribuições Incidentes sobre Faturamento"
+      },
+      {
+        "id": 6,
+        "title": "INSS"
+      },
+      {
+        "id": 7,
+        "title": "Pró-labore"
+      },
+      {
+        "id": 8,
+        "parentId": 2,
+        "title": "13º salários"
+      },
+      {
+        "id": 9,
+        "parentId": 2,
+        "title": "Férias"
+      },
+      {
+        "id": 10,
+        "parentId": 2,
+        "title": "Mantimentos"
+      },
+      {
+        "id": 11,
+        "parentId": 2,
+        "title": "Tarifas bancárias diversas"
+      },
+      {
+        "id": 12,
+        "parentId": 2,
+        "title": "Telefone"
+      },
+      {
+        "id": 13,
+        "parentId": 3,
+        "title": "Honorários contábeis"
+      },
+      {
+        "id": 14,
+        "parentId": 5,
+        "title": "IRPJ"
+      },
+      {
+        "id": 15,
+        "parentId": 5,
+        "title": "IRRF"
+      },
+      {
+        "id": 16,
+        "parentId": 5,
+        "title": "Simples nacional"
       }
     ]
   },
@@ -26,6 +81,7 @@
     "type": "incomes",
     "categories": [
       {
+        "id": 15,
         "title": "Prestação de Serviços"
       }
     ]

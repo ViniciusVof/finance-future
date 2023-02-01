@@ -2,15 +2,17 @@
   "fullname": "Vinicius Oliveira de Freitas",
   "banks": [
     {
+      "initialBalance": 0.0,
       "amountBalance": 219.96,
       "bankAccount": "BS2 - Empresas",
       "typeAccount": "Conta Corrente"
     },
     {
-      "amountBalance": 219.96,
+      "initialBalance": 0.0,
+      "amountBalance": 977.14,
       "bankAccount": "Inter - Empresas",
       "typeAccount": "Conta Investimento"
     }
   ],
-  "totalAmountBalance": 420.1
+  "totalAmountBalance": 1197.1
 }

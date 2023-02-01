@@ -1,11 +1,13 @@
 [
   {
+    "initialBalance": 0.0,
     "amountBalance": 219.96,
     "bankAccount": "BS2 - Empresas",
     "typeAccount": "Conta Corrente"
   },
   {
-    "amountBalance": 219.96,
+    "initialBalance": 0.0,
+    "amountBalance": 977.14,
     "bankAccount": "Inter - Empresas",
     "typeAccount": "Conta Investimento"
   }
