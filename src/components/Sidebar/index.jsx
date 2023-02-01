@@ -1,7 +1,7 @@
 import { Typography } from 'antd';
+import { menuRoutes } from 'config/menuRoutes';
 import { useNavigate } from 'react-router-dom';
 
-import { menuRoutes } from './menuRoutes';
 import * as S from './styles';
 
 export function Sidebar() {

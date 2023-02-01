@@ -1,5 +1,6 @@
 import propTypes from 'prop-types';
 
+import { Breadcrumbs } from 'components/Breadcrumbs';
 import { SEO } from 'components/SEO';
 import { Sidebar } from 'components/Sidebar';
 
@@ -10,7 +11,10 @@ export function Layout({ children, titleSEO }) {
     <S.Wrapper>
       <SEO title={titleSEO} />
       <Sidebar />
-      <S.Content>{children}</S.Content>
+      <S.Content>
+        <Breadcrumbs />
+        {children}
+      </S.Content>
     </S.Wrapper>
   );
 }

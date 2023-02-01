@@ -6,7 +6,11 @@ import * as Pages from 'pages';
 
 const routes = [
   { path: '/', element: <Pages.Home /> },
-  { path: '/about', element: <Pages.About /> },
+  { path: '/incomes', element: <Pages.Incomes /> },
+  { path: '/expenses', element: <Pages.Expenses /> },
+  { path: '/bank-accounts', element: <Pages.BankAccounts /> },
+  { path: '/categories', element: <Pages.Categories /> },
+  { path: '/my-profile', element: <Pages.MyProfile /> },
 ];
 
 export function Router() {

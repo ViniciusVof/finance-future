@@ -23,3 +23,12 @@ export const menuRoutes = [
   },
   { label: 'Sair', key: '/logout', icon: <I.LogoutOutlined /> },
 ];
+
+export const breadcrumbsRoutes = {
+  '/': 'Visão Geral',
+  '/expenses': 'Despesas',
+  '/incomes': 'Receitas',
+  '/bank-accounts': 'Contas Bancárias',
+  '/categories': 'Categorias',
+  '/my-profile': 'Meu Perfil',
+};

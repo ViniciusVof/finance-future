@@ -1,2 +1,6 @@
 export { Home } from './Home';
-export { About } from './About';
+export { Incomes } from './Incomes';
+export { Expenses } from './Expenses';
+export { BankAccounts } from './BankAccounts';
+export { Categories } from './Categories';
+export { MyProfile } from './MyProfile';
