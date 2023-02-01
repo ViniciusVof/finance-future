@@ -34,5 +34,23 @@
     "realize": true,
     "type": "expenses",
     "entrieDate": "01/01/2023"
+  },
+  {
+    "title": "Ant Title  asdfasdf 4",
+    "account": "Bradesco",
+    "category": "Prestação de Serviço",
+    "amount": 1212.99,
+    "realize": true,
+    "type": "expenses",
+    "entrieDate": "02/02/2023"
+  },
+  {
+    "title": "Ant Title  asdfasdf 4",
+    "account": "Itaú",
+    "category": "Prestação de Serviço",
+    "amount": 121.99,
+    "realize": false,
+    "type": "expenses",
+    "entrieDate": "01/02/2023"
   }
 ]

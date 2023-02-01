@@ -1,11 +1,15 @@
 /* eslint-disable react/prop-types */
+import { useState } from 'react';
+
 import * as I from '@ant-design/icons';
 import * as A from 'antd';
 import dayjs from 'dayjs';
 
 import * as S from './styles';
 
-export function EntriesFlow({ data, setSelectedDate, selectedDate, type }) {
+export function EntriesFlow({ data, type }) {
+  const [selectedDate, setSelectedDate] = useState(dayjs());
+
   return (
     <>
       <S.HeaderNavigation>
