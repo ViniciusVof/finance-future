@@ -6,7 +6,7 @@
     "category": "Prestação de Serviço",
     "type": "incomes",
     "realize": true,
-    "entrieDate": "01/02/2023"
+    "dueDate": "01/02/2023"
   },
   {
     "title": "Ant Design 2",
@@ -15,7 +15,7 @@
     "amount": 12.99,
     "type": "incomes",
     "realize": false,
-    "entrieDate": "02/01/2023"
+    "dueDate": "02/01/2023"
   },
   {
     "title": "Ant Design Title 3 Title",
@@ -24,7 +24,7 @@
     "amount": 12.99,
     "type": "incomes",
     "realize": true,
-    "entrieDate": "04/02/2023"
+    "dueDate": "04/02/2023"
   },
   {
     "title": "Ant Title 4",
@@ -33,7 +33,7 @@
     "amount": 12.99,
     "realize": true,
     "type": "expenses",
-    "entrieDate": "01/01/2023"
+    "dueDate": "01/01/2023"
   },
   {
     "title": "Ant Title  asdfasdf 4",
@@ -42,7 +42,7 @@
     "amount": 1212.99,
     "realize": true,
     "type": "expenses",
-    "entrieDate": "02/02/2023"
+    "dueDate": "02/02/2023"
   },
   {
     "title": "Ant Title  asdfasdf 4",
@@ -51,6 +51,6 @@
     "amount": 121.99,
     "realize": false,
     "type": "expenses",
-    "entrieDate": "01/02/2023"
+    "dueDate": "01/02/2023"
   }
 ]

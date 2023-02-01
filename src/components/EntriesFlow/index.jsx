@@ -35,12 +35,14 @@ export function EntriesFlow({ data, type }) {
       <A.List
         itemLayout="horizontal"
         dataSource={data
+          .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
           .filter(
             item =>
-              dayjs(item.entrieDate, 'DD/MM/YYYY').format('MM/YYYY') ===
+              dayjs(item.dueDate, 'DD/MM/YYYY').format('MM/YYYY') ===
               dayjs(selectedDate, 'DD/MM/YYYY').format('MM/YYYY')
           )
-          .filter(item => item.type === type)}
+
+          .filter(item => (type ? item.type === type : item))}
         renderItem={item => (
           <A.List.Item
             actions={[
@@ -55,7 +57,10 @@ export function EntriesFlow({ data, type }) {
           >
             <S.WrapperItemList>
               <S.Indicator type={item.type} />
-              <S.ItemTitle>{item.title}</S.ItemTitle>
+              <S.ItemTitle>
+                {item.title}
+                <S.ItemDueDate>vencimento em {item.dueDate}</S.ItemDueDate>
+              </S.ItemTitle>
               <S.WrapperOtherItems>
                 <S.ItemCategory>{item.category}</S.ItemCategory>
                 <S.ItemAmount>

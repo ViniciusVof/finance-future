@@ -40,6 +40,13 @@ export const ItemAccount = styled(A.Typography.Paragraph)`
   font-size: 12px;
   color: #999;
 `;
+export const ItemDueDate = styled(A.Typography.Paragraph)`
+  text-align: left;
+  width: 180px;
+  justify-content: flex-start;
+  font-size: 12px;
+  color: #999;
+`;
 
 export const ItemCategory = styled(A.Typography.Paragraph)`
   text-align: left;
