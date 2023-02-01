@@ -1,0 +1,33 @@
+[
+  {
+    "type": "expenses",
+    "categories": [
+      {
+        "id": 1,
+        "title": "Custo dos Serviços Prestados"
+      },
+      {
+        "id": 2,
+        "title": "Despesas Administrativas"
+      },
+      {
+        "id": 3,
+        "parentId": 1,
+        "title": "Filha"
+      },
+      {
+        "id": 4,
+        "parentId": 1,
+        "title": "Filha2"
+      }
+    ]
+  },
+  {
+    "type": "incomes",
+    "categories": [
+      {
+        "title": "Prestação de Serviços"
+      }
+    ]
+  }
+]

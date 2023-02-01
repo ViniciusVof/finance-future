@@ -4,3 +4,4 @@ export { Layout } from './Layout';
 
 export { EntriesFlow } from './EntriesFlow';
 export { BankCard } from './BankCard';
+export { CategoriesCard } from './CategoriesCard';
