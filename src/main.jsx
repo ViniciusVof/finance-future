@@ -1,3 +1,5 @@
+import { ConfigProvider } from 'antd';
+import ptBR from 'antd/locale/pt_BR';
 import { ToastProvider } from 'contexts/ToastContext';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
@@ -16,17 +18,22 @@ const GlobalStyle = createGlobalStyle`
   .ant-card{
     border-radius: 3px;
   }
-  `;
+  .ant-input-number{
+    width: 100%;
+  }
+`;
 
 export function Main() {
   dayjs.locale('pt-br');
   dayjs.extend(customParseFormat);
   return (
-    <HelmetProvider>
-      <ToastProvider>
-        <GlobalStyle />
-        <Router />
-      </ToastProvider>
-    </HelmetProvider>
+    <ConfigProvider locale={ptBR}>
+      <HelmetProvider>
+        <ToastProvider>
+          <GlobalStyle />
+          <Router />
+        </ToastProvider>
+      </HelmetProvider>
+    </ConfigProvider>
   );
 }

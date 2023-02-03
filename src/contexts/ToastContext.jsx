@@ -20,11 +20,22 @@ export function ToastProvider({ children }) {
     [messageApi]
   );
 
+  const addToastSuccess = useCallback(
+    content => {
+      messageApi.open({
+        type: 'success',
+        content,
+      });
+    },
+    [messageApi]
+  );
+
   const valuesToastProvider = useMemo(
     () => ({
       addToastError,
+      addToastSuccess,
     }),
-    [addToastError]
+    [addToastError, addToastSuccess]
   );
 
   return (
