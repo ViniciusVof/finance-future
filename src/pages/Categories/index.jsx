@@ -6,13 +6,17 @@ import * as Components from 'components';
 
 export function Categories() {
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    getCategories().then(res => {
-      setCategories(res);
-    });
+    setLoading(true);
+    getCategories()
+      .then(res => {
+        setCategories(res);
+      })
+      .finally(() => setLoading(false));
   }, []);
   return (
-    <Components.Layout titleSEO="Categorias">
+    <Components.Layout titleSEO="Categorias" loading={loading}>
       <Components.CategoriesCard categories={categories} />
     </Components.Layout>
   );

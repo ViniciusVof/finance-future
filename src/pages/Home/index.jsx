@@ -9,13 +9,17 @@ import { formatBalance } from 'utils/balance';
 
 export function Home() {
   const [dashboard, setDashboard] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    getDashboard().then(res => {
-      setDashboard(res);
-    });
+    setLoading(true);
+    getDashboard()
+      .then(res => {
+        setDashboard(res);
+      })
+      .finally(() => setLoading(false));
   }, []);
   return (
-    <Components.Layout titleSEO="Home">
+    <Components.Layout titleSEO="Home" loading={loading}>
       <A.Row gutter={20}>
         <A.Col span={12}>
           <Components.DashCard title="Balanço">

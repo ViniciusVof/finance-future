@@ -6,11 +6,15 @@ import * as Components from 'components';
 
 export function BankAccounts() {
   const [accounts, setAccounts] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    getAccounts().then(res => setAccounts(res));
+    setLoading(true);
+    getAccounts()
+      .then(res => setAccounts(res))
+      .finally(() => setLoading(false));
   }, []);
   return (
-    <Components.Layout titleSEO="Contas Bancárias">
+    <Components.Layout titleSEO="Contas Bancárias" loading={loading}>
       <Components.BankCard listAccounts={accounts} />
     </Components.Layout>
   );

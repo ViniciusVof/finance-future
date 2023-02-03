@@ -7,13 +7,17 @@ import * as Components from 'components';
 
 export function Expenses() {
   const [entries, setEntries] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    getExpensesEntries().then(res => {
-      setEntries(res);
-    });
+    setLoading(true);
+    getExpensesEntries()
+      .then(res => {
+        setEntries(res);
+      })
+      .finally(() => setLoading(false));
   }, []);
   return (
-    <Components.Layout titleSEO="Despesas">
+    <Components.Layout titleSEO="Despesas" loading={loading}>
       <A.Card>
         <Components.EntriesFlow data={entries} type="expenses" />
       </A.Card>
