@@ -1,5 +1,5 @@
 export function formatBalance(amount) {
-  return amount.toLocaleString('pt-BR', {
+  return Number(amount).toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   });

@@ -6,28 +6,16 @@ import * as S from './styles';
 export function CategoriesCard({ categories }) {
   return (
     <S.Wrapper>
-      {categories.map(list => (
+      {categories.map(category => (
         <S.Card>
-          <S.Title level={4}>
-            Categorias de {list.type === 'expenses' ? 'Despesas' : 'Receitas'}
-          </S.Title>
+          <S.Title level={4}>Categorias de {category.type?.title}</S.Title>
           <S.Categories>
-            {list.categories
-              .filter(item => !item.parentId)
-              .map(category => (
-                <>
-                  <S.Category>{category.title}</S.Category>
-                  <S.SubCategories>
-                    {list.categories
-                      .filter(item =>
-                        item.parentId ? item.parentId === category.id : null
-                      )
-                      .map(subcategory => (
-                        <S.SubCategory>{subcategory.title}</S.SubCategory>
-                      ))}
-                  </S.SubCategories>
-                </>
+            <S.Category>{category.title}</S.Category>
+            <S.SubCategories>
+              {category.subcategories.map(subcategory => (
+                <S.SubCategory>{subcategory.title}</S.SubCategory>
               ))}
+            </S.SubCategories>
           </S.Categories>
         </S.Card>
       ))}

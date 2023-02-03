@@ -1,7 +1,7 @@
 [
   {
     "title": "Prestação de Serviço",
-    "account": "Conta Pessoal Operações",
+    "bankAccount": "Conta Pessoal Operações",
     "amount": 11000.0,
     "category": "Prestação de Serviços",
     "type": "incomes",
@@ -10,7 +10,7 @@
   },
   {
     "title": "Prestação de Serviço",
-    "account": "Conta Pessoal Operações",
+    "bankAccount": "Conta Pessoal Operações",
     "amount": 11000.0,
     "category": "Prestação de Serviços",
     "type": "incomes",
@@ -19,7 +19,7 @@
   },
   {
     "title": "Salário Vinicius",
-    "account": "Conta Pessoal Operações",
+    "bankAccount": "Conta Pessoal Operações",
     "category": "Pró-labore",
     "amount": 9924.09,
     "type": "expenses",
@@ -28,7 +28,7 @@
   },
   {
     "title": "Salário Vinicius",
-    "account": "Conta Pessoal Operações",
+    "bankAccount": "Conta Pessoal Operações",
     "category": "Pró-labore",
     "amount": 9656.34,
     "type": "expenses",
@@ -37,7 +37,7 @@
   },
   {
     "title": "Monitor",
-    "account": "Conta Pessoal Operações",
+    "bankAccount": "Conta Pessoal Operações",
     "category": "Pró-labore",
     "amount": 129,
     "type": "expenses",
