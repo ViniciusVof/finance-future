@@ -1,5 +1,3 @@
-/* eslint-disable array-callback-return */
-
 /* eslint-disable react/prop-types */
 import * as S from './styles';
 

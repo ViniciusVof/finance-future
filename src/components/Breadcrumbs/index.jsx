@@ -1,11 +1,11 @@
 import { Breadcrumb } from 'antd';
 import { breadcrumbsRoutes } from 'config/menuRoutes';
+import propTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 
 import * as S from './styles';
 
-// eslint-disable-next-line react/prop-types
-export function Breadcrumbs({ haveActions = false }) {
+export function Breadcrumbs({ haveActions }) {
   const location = useLocation();
   const pathSnippets = location.pathname.split('/').filter(i => i);
   const extraBreadcrumbItems = pathSnippets.map((_, index) => {
@@ -29,3 +29,9 @@ export function Breadcrumbs({ haveActions = false }) {
     </S.BreadcrumbsWrapper>
   );
 }
+Breadcrumbs.defaultProps = {
+  haveActions: false,
+};
+Breadcrumbs.propTypes = {
+  haveActions: propTypes.bool,
+};

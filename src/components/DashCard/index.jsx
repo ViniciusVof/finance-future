@@ -1,4 +1,5 @@
-/* eslint-disable react/prop-types */
+import propTypes from 'prop-types';
+
 import * as S from './styles';
 
 export function DashCard({ title, children }) {
@@ -9,3 +10,8 @@ export function DashCard({ title, children }) {
     </S.Card>
   );
 }
+
+DashCard.propTypes = {
+  title: propTypes.string.isRequired,
+  children: propTypes.node.isRequired,
+};

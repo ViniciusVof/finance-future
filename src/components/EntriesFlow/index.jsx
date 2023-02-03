@@ -4,6 +4,7 @@ import { useState } from 'react';
 import * as I from '@ant-design/icons';
 import * as A from 'antd';
 import dayjs from 'dayjs';
+import propTypes from 'prop-types';
 
 import * as S from './styles';
 
@@ -74,3 +75,11 @@ export function EntriesFlow({ data, type }) {
     </>
   );
 }
+EntriesFlow.defaultProps = {
+  type: null,
+};
+EntriesFlow.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  data: propTypes.array.isRequired,
+  type: propTypes.string,
+};

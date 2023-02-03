@@ -1,4 +1,5 @@
-/* eslint-disable react/prop-types */
+import propTypes from 'prop-types';
+
 import { formatBalance } from 'utils/balance';
 
 import * as S from './styles';
@@ -28,3 +29,11 @@ export function BankCard({ listAccounts, isList }) {
     </S.Wrapper>
   );
 }
+BankCard.defaultProps = {
+  isList: false,
+};
+BankCard.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  listAccounts: propTypes.array.isRequired,
+  isList: propTypes.bool,
+};

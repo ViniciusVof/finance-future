@@ -1,9 +1,9 @@
 import * as I from '@ant-design/icons';
 import * as A from 'antd';
+import propTypes from 'prop-types';
 
 import * as S from './styles';
 
-// eslint-disable-next-line react/prop-types
 export function Actions({ addLabelButton }) {
   return (
     <S.WrapperActions>
@@ -13,3 +13,7 @@ export function Actions({ addLabelButton }) {
     </S.WrapperActions>
   );
 }
+
+Actions.propTypes = {
+  addLabelButton: propTypes.string.isRequired,
+};
