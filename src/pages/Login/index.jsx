@@ -5,6 +5,7 @@ import * as I from '@ant-design/icons';
 import * as A from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Authenticate } from 'services/users.service';
+import * as yup from 'yup';
 
 import * as Components from 'components';
 
@@ -12,12 +13,26 @@ import * as S from './styles';
 
 export function Login() {
   const navigate = useNavigate();
+  const [form] = A.Form.useForm();
   const [loading, setLoading] = useState(false);
+
+  const schema = yup.object().shape({
+    email: yup.string().email('Campo inválido').required('Campo obrigatório'),
+    password: yup.string().required('Campo obrigatório'),
+  });
+
+  const yupSync = {
+    async validator({ field }, value) {
+      await schema.validateSyncAt(field, { [field]: value });
+    },
+  };
+
   return (
     <S.Wrapper>
       <A.Card>
         <Components.Brand />
         <A.Form
+          form={form}
           initialValues={{
             email: '',
             password: '',
@@ -33,7 +48,7 @@ export function Login() {
               .finally(() => setLoading(false));
           }}
         >
-          <A.Form.Item label="E-mail" name="email">
+          <A.Form.Item label="E-mail" name="email" rules={[yupSync]}>
             <A.Input
               name="email"
               placeholder="Digite seu e-mail"
@@ -41,7 +56,7 @@ export function Login() {
               prefix={<I.MailOutlined className="site-form-item-icon" />}
             />
           </A.Form.Item>
-          <A.Form.Item label="Senha" name="password">
+          <A.Form.Item label="Senha" name="password" rules={[yupSync]}>
             <A.Input.Password
               name="password"
               type="password"
