@@ -9,8 +9,8 @@ export function Sidebar() {
 
   function handleNavigate(route) {
     if (route === '/logout') {
-      // eslint-disable-next-line no-alert
-      alert('Sair');
+      localStorage.clear();
+      navigate('/login');
     } else {
       navigate(route);
     }

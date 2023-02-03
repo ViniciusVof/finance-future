@@ -41,9 +41,7 @@ export function EntriesFlow({ data, type }) {
             item =>
               dayjs(item.dueDate, 'DD/MM/YYYY').format('MM/YYYY') ===
               dayjs(selectedDate, 'DD/MM/YYYY').format('MM/YYYY')
-          )
-
-          .filter(item => (type ? item.type === type : item))}
+          )}
         renderItem={item => (
           <A.List.Item
             actions={[
@@ -54,7 +52,7 @@ export function EntriesFlow({ data, type }) {
             ]}
           >
             <S.WrapperItemList>
-              <S.Indicator type={item.type} />
+              <S.Indicator type={type} />
               <S.ItemTitle>
                 {item.title}
                 <S.ItemDueDate>vencimento em {item.dueDate}</S.ItemDueDate>
@@ -62,11 +60,11 @@ export function EntriesFlow({ data, type }) {
               <S.WrapperOtherItems>
                 <S.ItemCategory>{item.category}</S.ItemCategory>
                 <S.ItemAmount>
-                  {item.amount.toLocaleString('pt-BR', {
+                  {Number(item.amount).toLocaleString('pt-BR', {
                     style: 'currency',
                     currency: 'BRL',
                   })}
-                  <S.ItemAccount>em {item.account}</S.ItemAccount>
+                  <S.ItemAccount>em {item.bankAccount}</S.ItemAccount>
                 </S.ItemAmount>
               </S.WrapperOtherItems>
             </S.WrapperItemList>

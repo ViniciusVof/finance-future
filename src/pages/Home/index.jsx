@@ -26,11 +26,13 @@ export function Home() {
             </A.Typography.Title>
           </Components.DashCard>
         </A.Col>
-        <A.Col span={12}>
-          <Components.DashCard title="Minhas Contas">
-            <Components.BankCard listAccounts={dashboard?.accounts} isList />
-          </Components.DashCard>
-        </A.Col>
+        {dashboard?.accounts && (
+          <A.Col span={12}>
+            <Components.DashCard title="Minhas Contas">
+              <Components.BankCard listAccounts={dashboard?.accounts} isList />
+            </Components.DashCard>
+          </A.Col>
+        )}
       </A.Row>
     </Components.Layout>
   );
