@@ -1,7 +1,8 @@
-import { Typography } from 'antd';
 import { menuRoutes } from 'config/menuRoutes';
 import { useNavigate } from 'react-router-dom';
 
+// eslint-disable-next-line import/no-cycle
+import { Brand } from '../Brand';
 import * as S from './styles';
 
 export function Sidebar() {
@@ -18,9 +19,7 @@ export function Sidebar() {
   return (
     <S.WrapperMenu>
       <S.ContentHeaderMenu>
-        <Typography.Title level={3}>
-          {process.env.REACT_APP_NAME_APP}
-        </Typography.Title>
+        <Brand />
       </S.ContentHeaderMenu>
       <S.MenuApp
         onClick={({ key }) => handleNavigate(key)}

@@ -7,4 +7,7 @@ export const Wrapper = styled.div`
   background: #f9f9f9;
   align-items: center;
   justify-content: center;
+  .site-form-item-icon {
+    color: rgba(0, 0, 0, 0.45);
+  }
 `;
