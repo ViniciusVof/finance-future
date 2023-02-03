@@ -1,8 +1,8 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react';
 
 import * as I from '@ant-design/icons';
 import * as A from 'antd';
+import useToast from 'hooks/UseToast';
 import { useNavigate } from 'react-router-dom';
 import { Authenticate } from 'services/users.service';
 import * as yup from 'yup';
@@ -15,6 +15,7 @@ export function Login() {
   const navigate = useNavigate();
   const [form] = A.Form.useForm();
   const [loading, setLoading] = useState(false);
+  const { addToastError } = useToast();
 
   const schema = yup.object().shape({
     email: yup.string().email('Campo inválido').required('Campo obrigatório'),
@@ -33,10 +34,6 @@ export function Login() {
         <Components.Brand />
         <A.Form
           form={form}
-          initialValues={{
-            email: '',
-            password: '',
-          }}
           layout="vertical"
           onFinish={async values => {
             setLoading(true);
@@ -44,6 +41,9 @@ export function Login() {
               .then(res => {
                 localStorage.setItem('@finances:token', res.Authorization);
                 navigate('/');
+              })
+              .catch(err => {
+                addToastError(err);
               })
               .finally(() => setLoading(false));
           }}

@@ -1,3 +1,4 @@
+import { ToastProvider } from 'contexts/ToastContext';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import { HelmetProvider } from 'react-helmet-async';
@@ -22,8 +23,10 @@ export function Main() {
   dayjs.extend(customParseFormat);
   return (
     <HelmetProvider>
-      <GlobalStyle />
-      <Router />
+      <ToastProvider>
+        <GlobalStyle />
+        <Router />
+      </ToastProvider>
     </HelmetProvider>
   );
 }
