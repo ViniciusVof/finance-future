@@ -8,3 +8,4 @@ export { EntriesFlow } from './EntriesFlow';
 export { BankCard } from './BankCard';
 export { CategoriesCard } from './CategoriesCard';
 export { DashCard } from './DashCard';
+export { Actions } from './Actions';

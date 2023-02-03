@@ -22,7 +22,8 @@ export function Incomes() {
       .finally(() => setLoading(false));
   }, []);
   return (
-    <Components.Layout titleSEO="Receitas" loading={loading}>
+    <Components.Layout titleSEO="Receitas" loading={loading} haveActions>
+      <Components.Actions addLabelButton="Nova Receita" />
       <A.Card>
         <Components.EntriesFlow data={entries} type="incomes" />
       </A.Card>

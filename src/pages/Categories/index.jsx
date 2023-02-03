@@ -21,7 +21,8 @@ export function Categories() {
       .finally(() => setLoading(false));
   }, []);
   return (
-    <Components.Layout titleSEO="Categorias" loading={loading}>
+    <Components.Layout titleSEO="Categorias" loading={loading} haveActions>
+      <Components.Actions addLabelButton="Nova Categoria" />
       <Components.CategoriesCard categories={categories} />
     </Components.Layout>
   );

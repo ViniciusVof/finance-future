@@ -7,7 +7,7 @@ import { Sidebar } from 'components/Sidebar';
 
 import * as S from './styles';
 
-export function Layout({ children, titleSEO, loading }) {
+export function Layout({ children, titleSEO, loading, haveActions }) {
   return (
     <S.Wrapper>
       <SEO title={titleSEO} />
@@ -17,7 +17,7 @@ export function Layout({ children, titleSEO, loading }) {
           <Loading />
         ) : (
           <>
-            <Breadcrumbs />
+            <Breadcrumbs haveActions={haveActions} />
             {children}
           </>
         )}
@@ -26,13 +26,15 @@ export function Layout({ children, titleSEO, loading }) {
   );
 }
 Layout.defaultProps = {
-  titleSEO: 'Vibbraneo Todo',
+  titleSEO: process.env.REACT_APP_NAME_APP,
   children: null,
   loading: false,
+  haveActions: false,
 };
 
 Layout.propTypes = {
   titleSEO: propTypes.string,
   children: propTypes.node,
   loading: propTypes.bool,
+  haveActions: propTypes.bool,
 };

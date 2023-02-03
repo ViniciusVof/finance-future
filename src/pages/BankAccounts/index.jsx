@@ -19,7 +19,12 @@ export function BankAccounts() {
       .finally(() => setLoading(false));
   }, []);
   return (
-    <Components.Layout titleSEO="Contas Bancárias" loading={loading}>
+    <Components.Layout
+      titleSEO="Contas Bancárias"
+      loading={loading}
+      haveActions
+    >
+      <Components.Actions addLabelButton="Nova Conta Bancária" />
       <Components.BankCard listAccounts={accounts} />
     </Components.Layout>
   );

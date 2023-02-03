@@ -4,7 +4,8 @@ import { Link, useLocation } from 'react-router-dom';
 
 import * as S from './styles';
 
-export function Breadcrumbs() {
+// eslint-disable-next-line react/prop-types
+export function Breadcrumbs({ haveActions = false }) {
   const location = useLocation();
   const pathSnippets = location.pathname.split('/').filter(i => i);
   const extraBreadcrumbItems = pathSnippets.map((_, index) => {
@@ -23,7 +24,7 @@ export function Breadcrumbs() {
 
   // eslint-disable-next-line react/jsx-no-bind
   return (
-    <S.BreadcrumbsWrapper>
+    <S.BreadcrumbsWrapper haveActions={haveActions}>
       <Breadcrumb>{breadcrumbItems}</Breadcrumb>
     </S.BreadcrumbsWrapper>
   );
