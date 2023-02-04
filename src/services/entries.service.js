@@ -1,5 +1,9 @@
 import { get } from './api_methods';
 
+async function getTypeEntries() {
+  const { data } = await get(`typeentries`);
+  return data;
+}
 async function getEntries() {
   const { data } = await get(`entries`);
   return data;
@@ -14,4 +18,4 @@ async function getIncomesEntries() {
   return data;
 }
 
-export { getEntries, getIncomesEntries, getExpensesEntries };
+export { getEntries, getIncomesEntries, getExpensesEntries, getTypeEntries };

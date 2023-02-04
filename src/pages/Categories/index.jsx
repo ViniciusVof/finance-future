@@ -7,6 +7,7 @@ import {
   createSubCategory,
   getCategories,
 } from 'services/categories.service';
+import { getTypeEntries } from 'services/entries.service';
 import * as yup from 'yup';
 
 import * as Components from 'components';
@@ -14,6 +15,7 @@ import * as Components from 'components';
 export function Categories() {
   const [modalShow, setModalShow] = useState(false);
   const [form] = A.Form.useForm();
+  const [entriesList, setEntriesList] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const { addToastError, addToastSuccess } = useToast();
@@ -32,16 +34,31 @@ export function Categories() {
     },
   };
 
-  function fetchAll() {
-    setLoading(true);
+  function fetchTypeEntries() {
+    getTypeEntries()
+      .then(res => {
+        // eslint-disable-next-line no-console
+        console.log(res);
+        setEntriesList(res);
+      })
+      .catch(err => {
+        addToastError(err);
+      });
+  }
+  function fetchCategories() {
     getCategories()
       .then(res => {
         setCategories(res);
       })
       .catch(err => {
         addToastError(err);
-      })
-      .finally(() => setLoading(false));
+      });
+  }
+  function fetchAll() {
+    setLoading(true);
+    Promise.all([fetchCategories(), fetchTypeEntries()]).finally(() => {
+      setLoading(false);
+    });
   }
   const onCreate = values => {
     setLoading(true);
@@ -81,7 +98,8 @@ export function Categories() {
         addLabelButton="Nova Categoria"
         handleAdd={() => setModalShow(true)}
       />
-      <Components.CategoriesCard categories={categories} />
+
+      <Components.CategoriesCard listEntries={entriesList} />
 
       <Components.ModalForm
         setLoading={setLoading}
