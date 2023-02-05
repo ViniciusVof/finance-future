@@ -8,6 +8,7 @@ import {
   createEntries,
   getExpensesEntries,
   getTypeEntries,
+  realizeEntries,
 } from 'services/entries.service';
 import * as yup from 'yup';
 
@@ -71,6 +72,23 @@ export function Expenses() {
   const handleCategory = value => {
     setCategoriesId(value);
   };
+
+  function handleRealize(id, realize, dueDate) {
+    realizeEntries({
+      id,
+      realize,
+      dueDate: dayjs(dueDate).format('DD/MM/YYYY'),
+    })
+      .then(() => {
+        addToastSuccess('Lançamento alterado');
+      })
+      .catch(err => {
+        addToastError(err);
+      })
+      .finally(() => {
+        fetchAll();
+      });
+  }
   useEffect(() => {
     fetchAll();
   }, []);
@@ -111,6 +129,7 @@ export function Expenses() {
       });
     setModalShow(false);
   };
+
   return (
     <Components.Layout titleSEO="Despesas" loading={loading} haveActions>
       <Components.Actions
@@ -118,7 +137,13 @@ export function Expenses() {
         handleAdd={() => setModalShow(true)}
       />
       <A.Card>
-        <Components.EntriesFlow data={entries} type="expenses" />
+        <Components.EntriesFlow
+          data={entries}
+          type="expenses"
+          handleRealize={(id, value, dueDate) =>
+            handleRealize(id, value, dueDate)
+          }
+        />
       </A.Card>
 
       <Components.ModalForm
