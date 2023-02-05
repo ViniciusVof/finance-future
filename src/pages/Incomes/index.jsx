@@ -74,10 +74,18 @@ export function Incomes() {
   };
 
   function handleRealize(id, realize, dueDate) {
-    realizeEntries({
+    // eslint-disable-next-line no-console
+    console.log(dueDate);
+    // eslint-disable-next-line no-console
+    console.log({
       id,
       realize,
       dueDate: dayjs(dueDate).format('DD/MM/YYYY'),
+    });
+    realizeEntries({
+      id,
+      realize,
+      dueDate,
     })
       .then(() => {
         addToastSuccess('Lançamento alterado');

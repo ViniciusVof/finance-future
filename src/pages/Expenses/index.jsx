@@ -77,7 +77,7 @@ export function Expenses() {
     realizeEntries({
       id,
       realize,
-      dueDate: dayjs(dueDate).format('DD/MM/YYYY'),
+      dueDate,
     })
       .then(() => {
         addToastSuccess('Lançamento alterado');
