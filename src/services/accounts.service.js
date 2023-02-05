@@ -1,7 +1,11 @@
-import { get, post } from './api_methods';
+import { get, post, put } from './api_methods';
 
 async function createAccount(params) {
   const { data } = await post(`accounts`, params);
+  return data;
+}
+async function updateAccount(params) {
+  const { data } = await put(`accounts`, params);
   return data;
 }
 async function getAccounts() {
@@ -14,4 +18,4 @@ async function getTypeAccounts() {
   return data;
 }
 
-export { getAccounts, getTypeAccounts, createAccount };
+export { getAccounts, getTypeAccounts, createAccount, updateAccount };

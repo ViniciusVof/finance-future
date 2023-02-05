@@ -1,10 +1,12 @@
+import * as I from '@ant-design/icons';
+import * as A from 'antd';
 import propTypes from 'prop-types';
 
 import { formatBalance } from 'utils/balance';
 
 import * as S from './styles';
 
-export function BankCard({ listAccounts, isList }) {
+export function BankCard({ listAccounts, isList, handleEdit }) {
   return isList ? (
     <S.WrapperList>
       {listAccounts.map(account => (
@@ -20,10 +22,26 @@ export function BankCard({ listAccounts, isList }) {
     <S.Wrapper>
       {listAccounts.map(account => (
         <S.Card>
-          <S.Balance>{formatBalance(account.amountBalance)}</S.Balance>
-          <S.Account>
-            {account.bankAccount} ({account.typeAccount})
-          </S.Account>
+          <S.HeaderActions>
+            <A.Button
+              type="secondary"
+              icon={<I.EditOutlined />}
+              onClick={() => {
+                handleEdit(account);
+              }}
+            />
+            <A.Button
+              type="secondary"
+              icon={<I.DeleteOutlined />}
+              onClick={() => {}}
+            />
+          </S.HeaderActions>
+          <S.Content>
+            <S.Balance>{formatBalance(account.amountBalance)}</S.Balance>
+            <S.Account>
+              {account.bankAccount} ({account.typeAccount})
+            </S.Account>
+          </S.Content>
         </S.Card>
       ))}
     </S.Wrapper>
@@ -31,9 +49,11 @@ export function BankCard({ listAccounts, isList }) {
 }
 BankCard.defaultProps = {
   isList: false,
+  handleEdit: () => {},
 };
 BankCard.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   listAccounts: propTypes.array.isRequired,
   isList: propTypes.bool,
+  handleEdit: propTypes.func,
 };

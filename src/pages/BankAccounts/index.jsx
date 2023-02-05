@@ -11,20 +11,23 @@ import {
   createAccount,
   getAccounts,
   getTypeAccounts,
+  updateAccount,
 } from 'services/accounts.service';
 import * as yup from 'yup';
 
 import * as Components from 'components';
 
-import { inputUnmaskBRL } from 'utils/balance';
+import { inputMaskBRL, inputUnmaskBRL } from 'utils/balance';
 
 export function BankAccounts() {
   const [accounts, setAccounts] = useState([]);
+  const [accountsId, setAccountsId] = useState([]);
   const [typeAccounts, setTypeAccounts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [form] = A.Form.useForm();
   const { addToastError, addToastSuccess } = useToast();
+  const [typeForm, setTypeForm] = useState('add');
 
   const schema = yup.object().shape({
     bankAccount: yup.string().required('Campo obrigatório'),
@@ -64,19 +67,44 @@ export function BankAccounts() {
   }, []);
   const onCreate = values => {
     setLoading(true);
-    createAccount({
-      ...values,
-      initialBalance: inputUnmaskBRL(values.initialBalance),
-    })
-      .then(() => {
-        addToastSuccess('Conta bancária adicionada');
+    if (typeForm === 'add') {
+      createAccount({
+        ...values,
+        initialBalance: inputUnmaskBRL(values.initialBalance),
       })
-      .finally(() => {
-        fetchAll();
-      });
+        .then(() => {
+          addToastSuccess('Conta bancária adicionada');
+        })
+        .finally(() => {
+          fetchAll();
+        });
+    } else {
+      updateAccount({
+        ...values,
+        id: accountsId,
+        initialBalance: inputUnmaskBRL(values.initialBalance),
+      })
+        .then(() => {
+          addToastSuccess('Conta bancária editada');
+        })
+        .finally(() => {
+          fetchAll();
+        });
+    }
     setModalShow(false);
   };
-
+  function handleShowModal(type) {
+    setTypeForm(type);
+    setModalShow(!modalShow);
+  }
+  function handleEdit(values) {
+    setAccountsId(values.id);
+    form.setFieldsValue({
+      ...values,
+      initialBalance: inputMaskBRL(Number(values.initialBalance).toFixed(2)),
+    });
+    handleShowModal('edit');
+  }
   return (
     <Components.Layout
       titleSEO="Contas Bancárias"
@@ -85,15 +113,18 @@ export function BankAccounts() {
     >
       <Components.Actions
         addLabelButton="Nova Conta Bancária"
-        handleAdd={() => setModalShow(true)}
+        handleAdd={() => handleShowModal('add')}
       />
-      <Components.BankCard listAccounts={accounts} />
+      <Components.BankCard
+        listAccounts={accounts}
+        handleEdit={accountsValues => handleEdit(accountsValues)}
+      />
       <Components.ModalForm
         setLoading={setLoading}
         form={form}
         open={modalShow}
-        title="Nova conta bancária"
-        okText="Cadastrar"
+        title={`${typeForm === 'add' ? 'Nova' : 'Editar'} conta bancária`}
+        okText={typeForm === 'add' ? 'Cadastrar' : 'Editar'}
         onCreate={onCreate}
         onCancel={() => setModalShow(false)}
       >

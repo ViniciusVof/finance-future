@@ -5,6 +5,10 @@ export const Wrapper = styled.section`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
+  .ant-card-body {
+    padding: 0;
+    width: 100%;
+  }
 `;
 export const WrapperList = styled.ul`
   display: flex;
@@ -22,6 +26,17 @@ export const CardList = styled.li`
   &:last-child {
     border-bottom: none;
   }
+`;
+
+export const HeaderActions = styled.div`
+  padding: 8px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2px;
+`;
+export const Content = styled.div`
+  padding: 0px 24px 24px 24px;
 `;
 
 export const BalanceList = styled(A.Typography.Paragraph)`
