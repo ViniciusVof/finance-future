@@ -4,10 +4,10 @@ import * as A from 'antd';
 import { inputMaskBRL } from 'utils/balance';
 
 export function BRLInput(props) {
-  const { onChange } = props;
+  const { onChange, acceptNegative } = props;
   const handleChange = e => {
     const { value: inputValue } = e.target;
-    onChange(inputMaskBRL(inputValue));
+    onChange(inputMaskBRL(inputValue, acceptNegative ?? true));
   };
 
   return (
