@@ -9,12 +9,13 @@ import {
   getExpensesEntries,
   getTypeEntries,
   realizeEntries,
+  updateEntries,
 } from 'services/entries.service';
 import * as yup from 'yup';
 
 import * as Components from 'components';
 
-import { inputUnmaskBRL } from 'utils/balance';
+import { inputMaskBRL, inputUnmaskBRL } from 'utils/balance';
 
 export function Expenses() {
   const [modalShow, setModalShow] = useState(false);
@@ -24,9 +25,11 @@ export function Expenses() {
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [categoriesId, setCategoriesId] = useState(false);
+  const [entriesId, setEntriesId] = useState([]);
+  const [typeForm, setTypeForm] = useState('add');
   const { addToastError, addToastSuccess } = useToast();
   const Categories = typeEntries
-    .filter(item => item.title === 'Receitas')
+    .filter(item => item.title === 'Despesas')
     .find(listEntrie => listEntrie)?.Categories;
   const SubCategories = Categories?.filter(
     category => category.id === categoriesId
@@ -98,7 +101,7 @@ export function Expenses() {
     amount: yup.string().required('Campo obrigatório'),
     accountsId: yup.string().required('Campo obrigatório'),
     categoriesId: yup.string().required('Campo obrigatório'),
-    subcategoriesId: yup.string(),
+    subCategoriesId: yup.string(),
     dueDate: yup.string().required('Campo obrigatório'),
     realize: yup.boolean().required('Campo obrigatório'),
   });
@@ -111,24 +114,54 @@ export function Expenses() {
 
   const onCreate = values => {
     setLoading(true);
-    // eslint-disable-next-line no-console
-    createEntries({
-      ...values,
-      amount: inputUnmaskBRL(values.amount, false),
-      dueDate: dayjs(values.dueDate).format('DD/MM/YYYY'),
-      type: 'expense',
-    })
-      .then(() => {
-        addToastSuccess('Lançamento adicionado');
+    if (typeForm === 'add') {
+      createEntries({
+        ...values,
+        amount: inputUnmaskBRL(values.amount, false),
+        dueDate: dayjs(values.dueDate).format('DD/MM/YYYY'),
+        type: 'expense',
       })
-      .catch(err => {
-        addToastError(err);
+        .then(() => {
+          addToastSuccess('Lançamento adicionado');
+        })
+        .catch(err => {
+          addToastError(err);
+        })
+        .finally(() => {
+          fetchAll();
+        });
+    } else {
+      updateEntries({
+        ...values,
+        id: entriesId,
+        amount: inputUnmaskBRL(values.amount, false),
+        dueDate: dayjs(values.dueDate).format('DD/MM/YYYY'),
       })
-      .finally(() => {
-        fetchAll();
-      });
+        .then(() => {
+          addToastSuccess('Lançamento editado');
+        })
+        .catch(err => {
+          addToastError(err);
+        })
+        .finally(() => {
+          fetchAll();
+        });
+    }
     setModalShow(false);
   };
+  function handleShowModal(type) {
+    setTypeForm(type);
+    setModalShow(!modalShow);
+  }
+  function handleEdit(values) {
+    setEntriesId(values.id);
+    form.setFieldsValue({
+      ...values,
+      amount: inputMaskBRL(Number(values.amount).toFixed(2), false),
+      dueDate: dayjs(values.dueDate, 'DD/MM/YYYY'),
+    });
+    handleShowModal('edit');
+  }
 
   return (
     <Components.Layout titleSEO="Despesas" loading={loading} haveActions>
@@ -143,6 +176,7 @@ export function Expenses() {
           handleRealize={(id, value, dueDate) =>
             handleRealize(id, value, dueDate)
           }
+          handleEdit={entriesValue => handleEdit(entriesValue)}
         />
       </A.Card>
 
@@ -150,8 +184,8 @@ export function Expenses() {
         setLoading={setLoading}
         form={form}
         open={modalShow}
-        title="Nova despesa"
-        okText="Cadastrar"
+        title={`${typeForm === 'add' ? 'Nova' : 'Editar'} despesa`}
+        okText={typeForm === 'add' ? 'Cadastrar' : 'Editar'}
         onCreate={onCreate}
         onCancel={() => setModalShow(false)}
       >
@@ -188,7 +222,7 @@ export function Expenses() {
           </A.Form.Item>
           {categoriesId && SubCategories.length > 0 && (
             <A.Form.Item
-              name="subcategoriesId"
+              name="subCategoriesId"
               label="SubCategoria"
               rules={[yupSync]}
             >
