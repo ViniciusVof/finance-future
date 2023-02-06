@@ -9,6 +9,7 @@ import * as A from 'antd';
 import useToast from 'hooks/UseToast';
 import {
   createAccount,
+  deleteAccount,
   getAccounts,
   getTypeAccounts,
   updateAccount,
@@ -30,6 +31,7 @@ export function BankAccounts() {
   const [typeForm, setTypeForm] = useState('add');
 
   const schema = yup.object().shape({
+    accountsId: yup.string().required('Campo obrigatório'),
     bankAccount: yup.string().required('Campo obrigatório'),
     initialBalance: yup.string().required('Campo obrigatório'),
     typeAccountsId: yup.string().required('Campo obrigatório'),
@@ -75,10 +77,13 @@ export function BankAccounts() {
         .then(() => {
           addToastSuccess('Conta bancária adicionada');
         })
+        .catch(err => {
+          addToastError(err);
+        })
         .finally(() => {
           fetchAll();
         });
-    } else {
+    } else if (typeForm === 'edit') {
       updateAccount({
         ...values,
         id: accountsId,
@@ -86,6 +91,23 @@ export function BankAccounts() {
       })
         .then(() => {
           addToastSuccess('Conta bancária editada');
+        })
+        .catch(err => {
+          addToastError(err);
+        })
+        .finally(() => {
+          fetchAll();
+        });
+    } else {
+      deleteAccount({
+        id: accountsId,
+        accountsId: values.accountsId,
+      })
+        .then(() => {
+          addToastSuccess('Conta bancária excluída');
+        })
+        .catch(err => {
+          addToastError(err);
         })
         .finally(() => {
           fetchAll();
@@ -105,6 +127,13 @@ export function BankAccounts() {
     });
     handleShowModal('edit');
   }
+  function handleRemove(values) {
+    setAccountsId(values.id);
+    form.setFieldsValue({
+      values,
+    });
+    handleShowModal('delete');
+  }
   return (
     <Components.Layout
       titleSEO="Contas Bancárias"
@@ -118,56 +147,102 @@ export function BankAccounts() {
       <Components.BankCard
         listAccounts={accounts}
         handleEdit={accountsValues => handleEdit(accountsValues)}
+        handleRemove={accountsValues => handleRemove(accountsValues)}
       />
       <Components.ModalForm
         setLoading={setLoading}
         form={form}
         open={modalShow}
-        title={`${typeForm === 'add' ? 'Nova' : 'Editar'} conta bancária`}
-        okText={typeForm === 'add' ? 'Cadastrar' : 'Editar'}
+        title={`${
+          (typeForm === 'add' && 'Nova') ||
+          (typeForm === 'edit' && 'Editar') ||
+          (typeForm === 'delete' && 'Excluir')
+        } conta bancária`}
+        okText={
+          (typeForm === 'add' && 'Cadastrar') ||
+          (typeForm === 'edit' && 'Editar') ||
+          (typeForm === 'delete' && 'Excluir')
+        }
         onCreate={onCreate}
         onCancel={() => setModalShow(false)}
       >
-        <A.Form form={form} layout="vertical">
-          <A.Form.Item
-            name="bankAccount"
-            label="Nome da conta"
-            rules={[yupSync]}
-          >
-            <A.Input placeholder="Digite o nome da conta" />
-          </A.Form.Item>
-          <A.Form.Item
-            name="initialBalance"
-            label="Saldo inicial"
-            rules={[yupSync]}
-          >
-            <Components.BRLInput placeholder="Digite o saldo inicial" />
-          </A.Form.Item>
-          <A.Form.Item
-            name="typeAccountsId"
-            label="Tipo da Conta"
-            rules={[yupSync]}
-          >
-            <A.Select
-              showSearch
-              placeholder="Selecione o tipo de conta"
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                (option?.title ?? '').includes(input)
-              }
-              filterSort={(optionA, optionB) =>
-                (optionA?.title ?? '')
-                  .toLowerCase()
-                  .localeCompare((optionB?.title ?? '').toLowerCase())
-              }
-              fieldNames={{
-                label: 'title',
-                value: 'id',
-              }}
-              options={typeAccounts}
-            />
-          </A.Form.Item>
-        </A.Form>
+        {typeForm === 'delete' ? (
+          <A.Form form={form} layout="vertical">
+            <A.Space block align="center" direction="vertical">
+              <A.Typography.Title level={4}>Atenção</A.Typography.Title>
+              <A.Typography.Paragraph>
+                Seus lançamentos existentes serão transferidos para uma conta
+                bancária já existente e o saldo do mesmo também, exceto seu
+                saldo inicial.
+              </A.Typography.Paragraph>
+            </A.Space>
+            <A.Form.Item
+              name="accountsId"
+              label="Conta bancária"
+              rules={[yupSync]}
+            >
+              <A.Select
+                showSearch
+                placeholder="Selecione a conta bancária"
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  (option?.title ?? '').includes(input)
+                }
+                filterSort={(optionA, optionB) =>
+                  (optionA?.title ?? '')
+                    .toLowerCase()
+                    .localeCompare((optionB?.title ?? '').toLowerCase())
+                }
+                fieldNames={{
+                  label: 'fullBankAccount',
+                  value: 'id',
+                }}
+                options={accounts.filter(item => item.id !== accountsId)}
+              />
+            </A.Form.Item>
+          </A.Form>
+        ) : (
+          <A.Form form={form} layout="vertical">
+            <A.Form.Item
+              name="bankAccount"
+              label="Nome da conta"
+              rules={[yupSync]}
+            >
+              <A.Input placeholder="Digite o nome da conta" />
+            </A.Form.Item>
+            <A.Form.Item
+              name="initialBalance"
+              label="Saldo inicial"
+              rules={[yupSync]}
+            >
+              <Components.BRLInput placeholder="Digite o saldo inicial" />
+            </A.Form.Item>
+            <A.Form.Item
+              name="typeAccountsId"
+              label="Tipo da Conta"
+              rules={[yupSync]}
+            >
+              <A.Select
+                showSearch
+                placeholder="Selecione o tipo de conta"
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  (option?.title ?? '').includes(input)
+                }
+                filterSort={(optionA, optionB) =>
+                  (optionA?.title ?? '')
+                    .toLowerCase()
+                    .localeCompare((optionB?.title ?? '').toLowerCase())
+                }
+                fieldNames={{
+                  label: 'title',
+                  value: 'id',
+                }}
+                options={typeAccounts}
+              />
+            </A.Form.Item>
+          </A.Form>
+        )}
       </Components.ModalForm>
     </Components.Layout>
   );

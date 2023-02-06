@@ -22,6 +22,9 @@ const GlobalStyle = createGlobalStyle`
   .ant-input-number{
     width: 100%;
   }
+  strong {
+    font-weight: bold
+  }
 `;
 
 export function Main() {

@@ -1,4 +1,4 @@
-import { get, patch, post, put } from './api_methods';
+import { get, patch, post, put, remove } from './api_methods';
 
 async function createEntries(params) {
   const { data } = await post(`entries`, params);
@@ -29,7 +29,10 @@ async function getIncomesEntries() {
   const { data } = await get(`entries/income`);
   return data;
 }
-
+async function deleteEntries(id) {
+  const { data } = await remove(`entries/${id}`);
+  return data;
+}
 export {
   getEntries,
   getIncomesEntries,
@@ -38,4 +41,5 @@ export {
   createEntries,
   realizeEntries,
   updateEntries,
+  deleteEntries,
 };

@@ -6,7 +6,7 @@ import { formatBalance } from 'utils/balance';
 
 import * as S from './styles';
 
-export function BankCard({ listAccounts, isList, handleEdit }) {
+export function BankCard({ listAccounts, isList, handleEdit, handleRemove }) {
   return isList ? (
     <S.WrapperList>
       {listAccounts.map(account => (
@@ -26,15 +26,15 @@ export function BankCard({ listAccounts, isList, handleEdit }) {
             <A.Button
               type="secondary"
               icon={<I.EditOutlined />}
-              onClick={() => {
-                handleEdit(account);
-              }}
+              onClick={() => handleEdit(account)}
             />
-            <A.Button
-              type="secondary"
-              icon={<I.DeleteOutlined />}
-              onClick={() => {}}
-            />
+            {listAccounts.length > 1 && (
+              <A.Button
+                type="secondary"
+                icon={<I.DeleteOutlined />}
+                onClick={() => handleRemove(account)}
+              />
+            )}
           </S.HeaderActions>
           <S.Content>
             <S.Balance>{formatBalance(account.amountBalance)}</S.Balance>
@@ -50,10 +50,12 @@ export function BankCard({ listAccounts, isList, handleEdit }) {
 BankCard.defaultProps = {
   isList: false,
   handleEdit: () => {},
+  handleRemove: () => {},
 };
 BankCard.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   listAccounts: propTypes.array.isRequired,
   isList: propTypes.bool,
   handleEdit: propTypes.func,
+  handleRemove: propTypes.func,
 };

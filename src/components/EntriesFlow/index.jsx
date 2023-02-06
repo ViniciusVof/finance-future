@@ -8,7 +8,13 @@ import propTypes from 'prop-types';
 
 import * as S from './styles';
 
-export function EntriesFlow({ data, type, handleRealize, handleEdit }) {
+export function EntriesFlow({
+  data,
+  type,
+  handleRealize,
+  handleEdit,
+  handleDelete,
+}) {
   const [selectedDate, setSelectedDate] = useState(dayjs());
 
   return (
@@ -57,6 +63,12 @@ export function EntriesFlow({ data, type, handleRealize, handleEdit }) {
                 type="secondary"
                 icon={<I.EditOutlined />}
                 onClick={() => handleEdit(item)}
+              />,
+
+              <A.Button
+                type="secondary"
+                icon={<I.DeleteOutlined />}
+                onClick={() => handleDelete(item.id, item.title)}
               />,
             ]}
           >
