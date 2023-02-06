@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 
+import * as I from '@ant-design/icons';
 import * as A from 'antd';
 import dayjs from 'dayjs';
 import useToast from 'hooks/UseToast';
 import { getAccounts } from 'services/accounts.service';
 import {
   createEntries,
+  deleteEntries,
   getIncomesEntries,
   getTypeEntries,
   realizeEntries,
@@ -18,6 +20,7 @@ import * as Components from 'components';
 import { inputMaskBRL, inputUnmaskBRL } from 'utils/balance';
 
 export function Incomes() {
+  const deleteModal = A.Modal.confirm;
   const [modalShow, setModalShow] = useState(false);
   const [form] = A.Form.useForm();
   const [entriesId, setEntriesId] = useState([]);
@@ -164,7 +167,31 @@ export function Incomes() {
     });
     handleShowModal('edit');
   }
-
+  function handleDelete(id, title) {
+    deleteModal({
+      title: `Atenção`,
+      icon: <I.ExclamationCircleFilled />,
+      content: (
+        <p>
+          Você tem certeza que deseja excluir o lançamento{' '}
+          <strong>&ldquo;{title}&rdquo;</strong>?
+        </p>
+      ),
+      okText: 'Sim, excluir',
+      okType: 'danger',
+      cancelText: 'Não',
+      onOk() {
+        deleteEntries(id)
+          .then(() => {
+            addToastSuccess('Lançamento excluído');
+          })
+          .catch(err => {
+            addToastError(err);
+          })
+          .finally(() => fetchAll());
+      },
+    });
+  }
   return (
     <Components.Layout titleSEO="Receitas" loading={loading} haveActions>
       <Components.Actions
@@ -179,6 +206,7 @@ export function Incomes() {
             handleRealize(id, value, dueDate)
           }
           handleEdit={entriesValue => handleEdit(entriesValue)}
+          handleDelete={(id, title) => handleDelete(id, title)}
         />
       </A.Card>
 
