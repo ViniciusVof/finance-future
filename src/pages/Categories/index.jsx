@@ -91,11 +91,15 @@ export function Categories() {
     fetchAll();
   }, []);
   return (
-    <Components.Layout titleSEO="Categorias" loading={loading} haveActions>
-      <Components.Actions
+    <Components.Layout
+      titleSEO="Categorias"
+      loading={loading}
+      // haveActions
+    >
+      {/* <Components.Actions
         addLabelButton="Nova Categoria"
         handleAdd={() => setModalShow(true)}
-      />
+      /> */}
 
       <Components.CategoriesCard listEntries={entriesList} />
 
