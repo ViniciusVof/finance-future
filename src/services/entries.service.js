@@ -1,4 +1,4 @@
-import { get, patch, post } from './api_methods';
+import { get, patch, post, put } from './api_methods';
 
 async function createEntries(params) {
   const { data } = await post(`entries`, params);
@@ -6,6 +6,10 @@ async function createEntries(params) {
 }
 async function realizeEntries(params) {
   const { data } = await patch(`entries/realizeEntries`, params);
+  return data;
+}
+async function updateEntries(params) {
+  const { data } = await put(`entries`, params);
   return data;
 }
 async function getTypeEntries() {
@@ -33,4 +37,5 @@ export {
   getTypeEntries,
   createEntries,
   realizeEntries,
+  updateEntries,
 };

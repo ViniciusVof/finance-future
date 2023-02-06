@@ -9,22 +9,26 @@ import {
   getIncomesEntries,
   getTypeEntries,
   realizeEntries,
+  updateEntries,
 } from 'services/entries.service';
 import * as yup from 'yup';
 
 import * as Components from 'components';
 
-import { inputUnmaskBRL } from 'utils/balance';
+import { inputMaskBRL, inputUnmaskBRL } from 'utils/balance';
 
 export function Incomes() {
   const [modalShow, setModalShow] = useState(false);
   const [form] = A.Form.useForm();
+  const [entriesId, setEntriesId] = useState([]);
   const [entries, setEntries] = useState([]);
   const [typeEntries, setTypeEntries] = useState([]);
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [categoriesId, setCategoriesId] = useState(false);
+  const [typeForm, setTypeForm] = useState('add');
   const { addToastError, addToastSuccess } = useToast();
+
   const Categories = typeEntries
     .filter(item => item.title === 'Receitas')
     .find(listEntrie => listEntrie)?.Categories;
@@ -74,14 +78,6 @@ export function Incomes() {
   };
 
   function handleRealize(id, realize, dueDate) {
-    // eslint-disable-next-line no-console
-    console.log(dueDate);
-    // eslint-disable-next-line no-console
-    console.log({
-      id,
-      realize,
-      dueDate: dayjs(dueDate).format('DD/MM/YYYY'),
-    });
     realizeEntries({
       id,
       realize,
@@ -119,24 +115,55 @@ export function Incomes() {
 
   const onCreate = values => {
     setLoading(true);
-    // eslint-disable-next-line no-console
-    createEntries({
-      ...values,
-      amount: inputUnmaskBRL(values.amount, false),
-      dueDate: dayjs(values.dueDate).format('DD/MM/YYYY'),
-      type: 'income',
-    })
-      .then(() => {
-        addToastSuccess('Lançamento adicionado');
+    if (typeForm === 'add') {
+      createEntries({
+        ...values,
+        amount: inputUnmaskBRL(values.amount, false),
+        dueDate: dayjs(values.dueDate).format('DD/MM/YYYY'),
+        type: 'income',
       })
-      .catch(err => {
-        addToastError(err);
+        .then(() => {
+          addToastSuccess('Lançamento adicionado');
+        })
+        .catch(err => {
+          addToastError(err);
+        })
+        .finally(() => {
+          fetchAll();
+        });
+    } else {
+      updateEntries({
+        ...values,
+        id: entriesId,
+        amount: inputUnmaskBRL(values.amount, false),
+        dueDate: dayjs(values.dueDate).format('DD/MM/YYYY'),
       })
-      .finally(() => {
-        fetchAll();
-      });
+        .then(() => {
+          addToastSuccess('Lançamento editado');
+        })
+        .catch(err => {
+          addToastError(err);
+        })
+        .finally(() => {
+          fetchAll();
+        });
+    }
     setModalShow(false);
   };
+
+  function handleShowModal(type) {
+    setTypeForm(type);
+    setModalShow(!modalShow);
+  }
+  function handleEdit(values) {
+    setEntriesId(values.id);
+    form.setFieldsValue({
+      ...values,
+      amount: inputMaskBRL(Number(values.amount).toFixed(2), false),
+      dueDate: dayjs(values.dueDate, 'DD/MM/YYYY'),
+    });
+    handleShowModal('edit');
+  }
 
   return (
     <Components.Layout titleSEO="Receitas" loading={loading} haveActions>
@@ -151,6 +178,7 @@ export function Incomes() {
           handleRealize={(id, value, dueDate) =>
             handleRealize(id, value, dueDate)
           }
+          handleEdit={entriesValue => handleEdit(entriesValue)}
         />
       </A.Card>
 
@@ -158,8 +186,8 @@ export function Incomes() {
         setLoading={setLoading}
         form={form}
         open={modalShow}
-        title="Nova receita"
-        okText="Cadastrar"
+        title={`${typeForm === 'add' ? 'Nova' : 'Editar'} receita`}
+        okText={typeForm === 'add' ? 'Cadastrar' : 'Editar'}
         onCreate={onCreate}
         onCancel={() => setModalShow(false)}
       >

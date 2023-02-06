@@ -3,6 +3,7 @@ import ptBR from 'antd/locale/pt_BR';
 import { ToastProvider } from 'contexts/ToastContext';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
+import localeData from 'dayjs/plugin/localeData';
 import { HelmetProvider } from 'react-helmet-async';
 import { Router } from 'routes';
 import { createGlobalStyle } from 'styled-components';
@@ -26,6 +27,7 @@ const GlobalStyle = createGlobalStyle`
 export function Main() {
   dayjs.locale('pt-br');
   dayjs.extend(customParseFormat);
+  dayjs.extend(localeData);
   return (
     <ConfigProvider locale={ptBR}>
       <HelmetProvider>

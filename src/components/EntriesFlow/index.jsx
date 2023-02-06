@@ -8,7 +8,7 @@ import propTypes from 'prop-types';
 
 import * as S from './styles';
 
-export function EntriesFlow({ data, type, handleRealize }) {
+export function EntriesFlow({ data, type, handleRealize, handleEdit }) {
   const [selectedDate, setSelectedDate] = useState(dayjs());
 
   return (
@@ -46,6 +46,11 @@ export function EntriesFlow({ data, type, handleRealize }) {
         renderItem={item => (
           <A.List.Item
             actions={[
+              <A.Button
+                type="secondary"
+                icon={<I.EditOutlined />}
+                onClick={() => handleEdit(item)}
+              />,
               <A.Button
                 type="secondary"
                 icon={item.realize ? <I.LikeOutlined /> : <I.LikeFilled />}
