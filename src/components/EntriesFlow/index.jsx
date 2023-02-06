@@ -48,15 +48,15 @@ export function EntriesFlow({ data, type, handleRealize, handleEdit }) {
             actions={[
               <A.Button
                 type="secondary"
-                icon={<I.EditOutlined />}
-                onClick={() => handleEdit(item)}
-              />,
-              <A.Button
-                type="secondary"
-                icon={item.realize ? <I.LikeOutlined /> : <I.LikeFilled />}
+                icon={item.realize ? <I.LikeFilled /> : <I.LikeOutlined />}
                 onClick={() =>
                   handleRealize(item.id, !item.realize, item.dueDate)
                 }
+              />,
+              <A.Button
+                type="secondary"
+                icon={<I.EditOutlined />}
+                onClick={() => handleEdit(item)}
               />,
             ]}
           >
