@@ -1,4 +1,4 @@
-import { get, post } from './api_methods';
+import { get, post, put } from './api_methods';
 
 async function getCategories() {
   const { data } = await get(`categories`);
@@ -12,4 +12,8 @@ async function createSubCategory(values) {
   const { data } = await post(`subcategories`, values);
   return data;
 }
-export { getCategories, createCategory, createSubCategory };
+async function updateCategory(params) {
+  const { data } = await put(`categories`, params);
+  return data;
+}
+export { getCategories, createCategory, createSubCategory, updateCategory };

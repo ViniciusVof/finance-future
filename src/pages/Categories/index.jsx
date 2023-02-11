@@ -6,6 +6,7 @@ import {
   createCategory,
   createSubCategory,
   getCategories,
+  updateCategory,
 } from 'services/categories.service';
 import { getTypeEntries } from 'services/entries.service';
 import * as yup from 'yup';
@@ -20,6 +21,8 @@ export function Categories() {
   const [loading, setLoading] = useState(false);
   const { addToastError, addToastSuccess } = useToast();
   const [type, setType] = useState('category');
+  const [itemId, setItemId] = useState('');
+  const [typeForm, setTypeForm] = useState('add');
 
   const schema = yup.object().shape({
     typeCategory: yup.string().required('Campo obrigatório'),
@@ -60,26 +63,44 @@ export function Categories() {
   }
   const onCreate = values => {
     setLoading(true);
-
-    if (type === 'category') {
-      createCategory({
-        title: values.title,
-        type: values.type,
-      })
-        .then(() => {
-          addToastSuccess('Categoria adicionada');
+    if (typeForm === 'add') {
+      if (type === 'category') {
+        createCategory({
+          title: values.title,
+          type: values.type,
         })
-        .finally(() => {
-          fetchAll();
-        });
-    } else {
-      createSubCategory(values)
-        .then(() => {
-          addToastSuccess('Categoria adicionada');
+          .then(() => {
+            addToastSuccess('Categoria adicionada');
+          })
+          .finally(() => {
+            fetchAll();
+          });
+      } else {
+        createSubCategory(values)
+          .then(() => {
+            addToastSuccess('Categoria adicionada');
+          })
+          .finally(() => {
+            fetchAll();
+          });
+      }
+    } else if (typeForm === 'edit') {
+      if (type === 'category') {
+        updateCategory({
+          id: itemId,
+          title: values.title,
+          type: values.type,
         })
-        .finally(() => {
-          fetchAll();
-        });
+          .then(() => {
+            addToastSuccess('Categoria editada');
+          })
+          .catch(err => {
+            addToastError(err);
+          })
+          .finally(() => {
+            fetchAll();
+          });
+      }
     }
 
     setModalShow(false);
@@ -87,28 +108,65 @@ export function Categories() {
   const handleType = ({ target: { value } }) => {
     setType(value);
   };
+  function handleShowModal(typeModal) {
+    setTypeForm(typeModal);
+    setModalShow(!modalShow);
+  }
+  function handleEdit(typeItem, values) {
+    setItemId(values.id);
+    setType(typeItem);
+    if (typeItem === 'subcategory') {
+      form.setFieldsValue({
+        typeCategory: typeItem,
+        title: values.title,
+        categoriesId: values.categoriesId,
+      });
+    } else {
+      form.setFieldsValue({
+        typeCategory: typeItem,
+        title: values.title,
+        type: values.type.title === 'Receitas' ? 'income' : 'expense',
+      });
+    }
+    handleShowModal('edit');
+  }
+  function handleRemove(typeItem, values) {
+    setItemId(values.id);
+    form.setFieldsValue({
+      values,
+    });
+    handleShowModal('delete');
+  }
   useEffect(() => {
     fetchAll();
   }, []);
   return (
-    <Components.Layout
-      titleSEO="Categorias"
-      loading={loading}
-      // haveActions
-    >
-      {/* <Components.Actions
+    <Components.Layout titleSEO="Categorias" loading={loading} haveActions>
+      <Components.Actions
         addLabelButton="Nova Categoria"
-        handleAdd={() => setModalShow(true)}
-      /> */}
+        handleAdd={() => handleShowModal('add')}
+      />
 
-      <Components.CategoriesCard listEntries={entriesList} />
+      <Components.CategoriesCard
+        listEntries={entriesList}
+        handleEdit={(typeItem, data) => handleEdit(typeItem, data)}
+        handleRemove={(typeItem, data) => handleRemove(typeItem, data)}
+      />
 
       <Components.ModalForm
         setLoading={setLoading}
         form={form}
         open={modalShow}
-        title="Nova categoria"
-        okText="Cadastrar"
+        title={`${
+          (typeForm === 'add' && 'Nova') ||
+          (typeForm === 'edit' && 'Editar') ||
+          (typeForm === 'delete' && 'Excluir')
+        } categoria`}
+        okText={
+          (typeForm === 'add' && 'Cadastrar') ||
+          (typeForm === 'edit' && 'Editar') ||
+          (typeForm === 'delete' && 'Excluir')
+        }
         onCreate={onCreate}
         onCancel={() => setModalShow(false)}
       >
@@ -123,6 +181,7 @@ export function Categories() {
                 { label: 'Categoria', value: 'category' },
                 { label: 'SubCategoria', value: 'subcategory' },
               ]}
+              disabled={typeForm !== 'add'}
               optionType="button"
               buttonStyle="solid"
               value={type}

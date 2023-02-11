@@ -16,10 +16,14 @@ export const Card = styled(A.Card)`
   }
 `;
 
-export const Title = styled(A.Typography.Title)`
+export const WrapperTitle = styled.div`
   display: flex;
   border-bottom: 1px solid #eee;
   padding-bottom: 10px;
+  justify-content: space-between;
+`;
+export const Title = styled(A.Typography.Title)`
+  display: flex;
 `;
 
 export const Categories = styled.ul`
