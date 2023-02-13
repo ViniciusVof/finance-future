@@ -24,6 +24,10 @@ async function deleteSubCategory(id) {
   const { data } = await remove(`subcategories/${id}`);
   return data;
 }
+async function deleteCategory(id, categoriesId) {
+  const { data } = await remove(`categories/${id}/${categoriesId}`);
+  return data;
+}
 export {
   getCategories,
   createCategory,
@@ -31,4 +35,5 @@ export {
   updateCategory,
   updateSubCategory,
   deleteSubCategory,
+  deleteCategory,
 };

@@ -6,6 +6,7 @@ import useToast from 'hooks/UseToast';
 import {
   createCategory,
   createSubCategory,
+  deleteCategory,
   deleteSubCategory,
   getCategories,
   updateCategory,
@@ -120,6 +121,17 @@ export function Categories() {
             fetchAll();
           });
       }
+    } else if (typeForm === 'delete') {
+      deleteCategory(itemId, values.categoriesId)
+        .then(() => {
+          addToastSuccess('Categoria excluída');
+        })
+        .catch(err => {
+          addToastError(err);
+        })
+        .finally(() => {
+          fetchAll();
+        });
     }
 
     setModalShow(false);
@@ -217,28 +229,15 @@ export function Categories() {
         onCreate={onCreate}
         onCancel={() => setModalShow(false)}
       >
-        <A.Form
-          form={form}
-          initialValues={{ typeCategory: type }}
-          layout="vertical"
-        >
-          <A.Form.Item name="typeCategory" label="Tipo" rules={[yupSync]}>
-            <A.Radio.Group
-              options={[
-                { label: 'Categoria', value: 'category' },
-                { label: 'SubCategoria', value: 'subcategory' },
-              ]}
-              disabled={typeForm !== 'add'}
-              optionType="button"
-              buttonStyle="solid"
-              value={type}
-              onChange={handleType}
-            />
-          </A.Form.Item>
-          <A.Form.Item name="title" label="Nome da categoria" rules={[yupSync]}>
-            <A.Input placeholder="Digite o nome da categoria" />
-          </A.Form.Item>
-          {type === 'subcategory' ? (
+        {typeForm === 'delete' ? (
+          <A.Form form={form} layout="vertical">
+            <A.Space block align="center" direction="vertical">
+              <A.Typography.Title level={4}>Atenção</A.Typography.Title>
+              <A.Typography.Paragraph>
+                Seus lançamentos existentes serão transferidos para uma
+                categoria já existente.
+              </A.Typography.Paragraph>
+            </A.Space>
             <A.Form.Item
               name="categoriesId"
               label="Categoria Pai"
@@ -260,59 +259,113 @@ export function Categories() {
                   label: 'title',
                   value: 'id',
                 }}
-                options={categories}
+                options={categories.filter(item => item.id !== itemId)}
               />
             </A.Form.Item>
-          ) : (
+          </A.Form>
+        ) : (
+          <A.Form
+            form={form}
+            initialValues={{ typeCategory: type }}
+            layout="vertical"
+          >
+            <A.Form.Item name="typeCategory" label="Tipo" rules={[yupSync]}>
+              <A.Radio.Group
+                options={[
+                  { label: 'Categoria', value: 'category' },
+                  { label: 'SubCategoria', value: 'subcategory' },
+                ]}
+                disabled={typeForm !== 'add'}
+                optionType="button"
+                buttonStyle="solid"
+                value={type}
+                onChange={handleType}
+              />
+            </A.Form.Item>
             <A.Form.Item
-              name="type"
-              label="Tipo da Categoria"
+              name="title"
+              label="Nome da categoria"
               rules={[yupSync]}
             >
-              <A.Select
-                showSearch
-                placeholder="Selecione o tipo da categoria"
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  (option?.label ?? '').includes(input)
-                }
-                filterSort={(optionA, optionB) =>
-                  (optionA?.label ?? '')
-                    .toLowerCase()
-                    .localeCompare((optionB?.label ?? '').toLowerCase())
-                }
-                options={[
-                  {
-                    label: 'Receitas',
-                    value: 'income',
-                  },
-                  {
-                    label: 'Despesas',
-                    value: 'expense',
-                  },
-                ]}
-              />
+              <A.Input placeholder="Digite o nome da categoria" />
             </A.Form.Item>
-          )}
-          {type === 'subcategory' ? (
-            <A.Space block align="center" direction="vertical">
-              <A.Typography.Title level={4}>Atenção</A.Typography.Title>
-              <A.Typography.Paragraph>
-                Ao alterar a Categoria Pai e seu tipo for diferente do atual,
-                seus lançamentos existentes nela serão transferidas para o mesmo
-                tipo da categoria alterada.
-              </A.Typography.Paragraph>
-            </A.Space>
-          ) : (
-            <A.Space block align="center" direction="vertical">
-              <A.Typography.Title level={4}>Atenção</A.Typography.Title>
-              <A.Typography.Paragraph>
-                Ao alterar o tipo da sua categoria, seus lançamentos existentes
-                nela serão transferidas para o tipo alterado.
-              </A.Typography.Paragraph>
-            </A.Space>
-          )}
-        </A.Form>
+            {type === 'subcategory' ? (
+              <A.Form.Item
+                name="categoriesId"
+                label="Categoria Pai"
+                rules={[yupSync]}
+              >
+                <A.Select
+                  showSearch
+                  placeholder="Selecione a categoria"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.title ?? '').includes(input)
+                  }
+                  filterSort={(optionA, optionB) =>
+                    (optionA?.title ?? '')
+                      .toLowerCase()
+                      .localeCompare((optionB?.title ?? '').toLowerCase())
+                  }
+                  fieldNames={{
+                    label: 'title',
+                    value: 'id',
+                  }}
+                  options={categories}
+                />
+              </A.Form.Item>
+            ) : (
+              <A.Form.Item
+                name="type"
+                label="Tipo da Categoria"
+                rules={[yupSync]}
+              >
+                <A.Select
+                  showSearch
+                  placeholder="Selecione o tipo da categoria"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? '').includes(input)
+                  }
+                  filterSort={(optionA, optionB) =>
+                    (optionA?.label ?? '')
+                      .toLowerCase()
+                      .localeCompare((optionB?.label ?? '').toLowerCase())
+                  }
+                  options={[
+                    {
+                      label: 'Receitas',
+                      value: 'income',
+                    },
+                    {
+                      label: 'Despesas',
+                      value: 'expense',
+                    },
+                  ]}
+                />
+              </A.Form.Item>
+            )}
+            {typeForm === 'edit' &&
+              (type === 'subcategory' ? (
+                <A.Space block align="center" direction="vertical">
+                  <A.Typography.Title level={4}>Atenção</A.Typography.Title>
+                  <A.Typography.Paragraph>
+                    Ao alterar a Categoria Pai e seu tipo for diferente do
+                    atual, seus lançamentos existentes nela serão transferidas
+                    para o mesmo tipo da categoria alterada.
+                  </A.Typography.Paragraph>
+                </A.Space>
+              ) : (
+                <A.Space block align="center" direction="vertical">
+                  <A.Typography.Title level={4}>Atenção</A.Typography.Title>
+                  <A.Typography.Paragraph>
+                    Ao alterar o tipo da sua categoria, seus lançamentos
+                    existentes nela serão transferidas para o tipo alterado.
+                  </A.Typography.Paragraph>
+                </A.Space>
+              ))}
+          </A.Form>
+        )}
       </Components.ModalForm>
     </Components.Layout>
   );
