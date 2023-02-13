@@ -6,14 +6,16 @@ import * as S from './styles';
 
 export function CategoriesCard({ listEntries, handleEdit, handleRemove }) {
   // eslint-disable-next-line react/no-unstable-nested-components
-  function ActionsButtons({ type, data }) {
+  function ActionsButtons({ type, data, showDelete }) {
     return (
       <>
-        <A.Button
-          type="secondary"
-          icon={<I.DeleteOutlined />}
-          onClick={() => handleRemove(type, data)}
-        />
+        {showDelete && (
+          <A.Button
+            type="secondary"
+            icon={<I.DeleteOutlined />}
+            onClick={() => handleRemove(type, data)}
+          />
+        )}
         <A.Button
           type="secondary"
           icon={<I.EditOutlined />}
@@ -33,14 +35,22 @@ export function CategoriesCard({ listEntries, handleEdit, handleRemove }) {
             {listEntrie?.Categories?.map(category => (
               <>
                 <S.Category>
-                  <ActionsButtons type="category" data={category} />
+                  <ActionsButtons
+                    type="category"
+                    data={category}
+                    showDelete={listEntrie?.Categories?.length > 1}
+                  />
                   {category.title}
                 </S.Category>
 
                 <S.SubCategories>
                   {category?.subcategories?.map(subcategory => (
                     <S.SubCategory>
-                      <ActionsButtons type="subcategory" data={subcategory} />
+                      <ActionsButtons
+                        type="subcategory"
+                        data={subcategory}
+                        showDelete
+                      />
                       {subcategory.title}
                     </S.SubCategory>
                   ))}
