@@ -1,4 +1,4 @@
-import { get, post, put } from './api_methods';
+import { get, post, put, remove } from './api_methods';
 
 async function getCategories() {
   const { data } = await get(`categories`);
@@ -20,10 +20,15 @@ async function updateSubCategory(params) {
   const { data } = await put(`subcategories`, params);
   return data;
 }
+async function deleteSubCategory(id) {
+  const { data } = await remove(`subcategories/${id}`);
+  return data;
+}
 export {
   getCategories,
   createCategory,
   createSubCategory,
   updateCategory,
   updateSubCategory,
+  deleteSubCategory,
 };

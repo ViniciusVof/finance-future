@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 
+import * as I from '@ant-design/icons';
 import * as A from 'antd';
 import useToast from 'hooks/UseToast';
 import {
   createCategory,
   createSubCategory,
+  deleteSubCategory,
   getCategories,
   updateCategory,
   updateSubCategory,
@@ -15,6 +17,7 @@ import * as yup from 'yup';
 import * as Components from 'components';
 
 export function Categories() {
+  const deleteModal = A.Modal.confirm;
   const [modalShow, setModalShow] = useState(false);
   const [form] = A.Form.useForm();
   const [entriesList, setEntriesList] = useState([]);
@@ -148,10 +151,38 @@ export function Categories() {
   }
   function handleRemove(typeItem, values) {
     setItemId(values.id);
-    form.setFieldsValue({
-      values,
-    });
-    handleShowModal('delete');
+    setType(typeItem);
+    if (typeItem === 'subcategory') {
+      deleteModal({
+        title: `Atenção`,
+        icon: <I.ExclamationCircleFilled />,
+        content: (
+          <p>
+            Você tem certeza que deseja excluir a subcategoria
+            <strong>&ldquo;{values.title}&rdquo;</strong>, todos os lançamentos
+            nela irão ser atribuidos a categoria pai?
+          </p>
+        ),
+        okText: 'Sim, excluir',
+        okType: 'danger',
+        cancelText: 'Não',
+        onOk() {
+          deleteSubCategory(values.id)
+            .then(() => {
+              addToastSuccess('SubCategoria excluída');
+            })
+            .catch(err => {
+              addToastError(err);
+            })
+            .finally(() => fetchAll());
+        },
+      });
+    } else {
+      form.setFieldsValue({
+        values,
+      });
+      handleShowModal('delete');
+    }
   }
   useEffect(() => {
     fetchAll();
