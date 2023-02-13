@@ -105,7 +105,7 @@ export function Incomes() {
     amount: yup.string().required('Campo obrigatório'),
     accountsId: yup.string().required('Campo obrigatório'),
     categoriesId: yup.string().required('Campo obrigatório'),
-    subcategoriesId: yup.string(),
+    subCategoriesId: yup.string(),
     dueDate: yup.string().required('Campo obrigatório'),
     realize: yup.boolean().required('Campo obrigatório'),
   });
@@ -252,7 +252,7 @@ export function Incomes() {
           </A.Form.Item>
           {categoriesId && SubCategories.length > 0 && (
             <A.Form.Item
-              name="subcategoriesId"
+              name="subCategoriesId"
               label="SubCategoria"
               rules={[yupSync]}
             >
