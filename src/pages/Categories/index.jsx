@@ -7,6 +7,7 @@ import {
   createSubCategory,
   getCategories,
   updateCategory,
+  updateSubCategory,
 } from 'services/categories.service';
 import { getTypeEntries } from 'services/entries.service';
 import * as yup from 'yup';
@@ -93,6 +94,21 @@ export function Categories() {
         })
           .then(() => {
             addToastSuccess('Categoria editada');
+          })
+          .catch(err => {
+            addToastError(err);
+          })
+          .finally(() => {
+            fetchAll();
+          });
+      } else {
+        updateSubCategory({
+          id: itemId,
+          title: values.title,
+          categoriesId: values.categoriesId,
+        })
+          .then(() => {
+            addToastSuccess('SubCategoria editada');
           })
           .catch(err => {
             addToastError(err);
@@ -246,6 +262,24 @@ export function Categories() {
                 ]}
               />
             </A.Form.Item>
+          )}
+          {type === 'subcategory' ? (
+            <A.Space block align="center" direction="vertical">
+              <A.Typography.Title level={4}>Atenção</A.Typography.Title>
+              <A.Typography.Paragraph>
+                Ao alterar a Categoria Pai e seu tipo for diferente do atual,
+                seus lançamentos existentes nela serão transferidas para o mesmo
+                tipo da categoria alterada.
+              </A.Typography.Paragraph>
+            </A.Space>
+          ) : (
+            <A.Space block align="center" direction="vertical">
+              <A.Typography.Title level={4}>Atenção</A.Typography.Title>
+              <A.Typography.Paragraph>
+                Ao alterar o tipo da sua categoria, seus lançamentos existentes
+                nela serão transferidas para o tipo alterado.
+              </A.Typography.Paragraph>
+            </A.Space>
           )}
         </A.Form>
       </Components.ModalForm>

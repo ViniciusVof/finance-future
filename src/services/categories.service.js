@@ -16,4 +16,14 @@ async function updateCategory(params) {
   const { data } = await put(`categories`, params);
   return data;
 }
-export { getCategories, createCategory, createSubCategory, updateCategory };
+async function updateSubCategory(params) {
+  const { data } = await put(`subcategories`, params);
+  return data;
+}
+export {
+  getCategories,
+  createCategory,
+  createSubCategory,
+  updateCategory,
+  updateSubCategory,
+};
