@@ -68,7 +68,14 @@ export function EntriesFlow({
               <A.Button
                 type="secondary"
                 icon={<I.DeleteOutlined />}
-                onClick={() => handleDelete(item.id, item.title)}
+                onClick={() => {
+                  handleDelete(
+                    item.id,
+                    item.title,
+                    item.recurrencyId,
+                    item.recurrencyIndex
+                  );
+                }}
               />,
             ]}
           >

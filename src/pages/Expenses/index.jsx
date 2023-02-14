@@ -30,6 +30,7 @@ export function Expenses() {
   const [categoriesId, setCategoriesId] = useState(false);
   const [entriesId, setEntriesId] = useState([]);
   const [typeForm, setTypeForm] = useState('add');
+  const [recurrency, setRecurrency] = useState(false);
   const { addToastError, addToastSuccess } = useToast();
   const Categories = typeEntries
     .filter(item => item.title === 'Despesas')
@@ -79,6 +80,10 @@ export function Expenses() {
     setCategoriesId(value);
   };
 
+  const handleRecurrency = value => {
+    setRecurrency(value);
+  };
+
   function handleRealize(id, realize, dueDate) {
     realizeEntries({
       id,
@@ -107,6 +112,8 @@ export function Expenses() {
     subCategoriesId: yup.string(),
     dueDate: yup.string().required('Campo obrigatório'),
     realize: yup.boolean().required('Campo obrigatório'),
+    repeatType: yup.string().required('Campo obrigatório'),
+    recurrencyTimes: yup.number().required('Campo obrigatório'),
   });
 
   const yupSync = {
@@ -117,12 +124,26 @@ export function Expenses() {
 
   const onCreate = values => {
     setLoading(true);
+    const recurrencyValues = {
+      unique: { recurrency: false },
+      recurrencyIlimited: {
+        recurrency: true,
+        recurrencyTimes: 0,
+        typeRecurrency: 'month',
+      },
+      installments: {
+        recurrency: true,
+        recurrencyTimes: values.recurrencyTimes,
+        typeRecurrency: 'month',
+      },
+    };
     if (typeForm === 'add') {
       createEntries({
         ...values,
         amount: inputUnmaskBRL(values.amount, false),
         dueDate: dayjs(values.dueDate).format('DD/MM/YYYY'),
         type: 'expense',
+        ...recurrencyValues[values.repeatType],
       })
         .then(() => {
           addToastSuccess('Lançamento adicionado');
@@ -165,8 +186,9 @@ export function Expenses() {
     });
     handleShowModal('edit');
   }
-  function handleDelete(id, title) {
+  function handleDelete(id, title, recurrencyId, recurrencyIndex) {
     deleteModal({
+      closable: true,
       title: `Atenção`,
       icon: <I.ExclamationCircleFilled />,
       content: (
@@ -175,11 +197,25 @@ export function Expenses() {
           <strong>&ldquo;{title}&rdquo;</strong>?
         </p>
       ),
-      okText: 'Sim, excluir',
+      okText: recurrencyId ? 'Excluir apenas este' : 'Sim, excluir',
       okType: 'danger',
-      cancelText: 'Não',
+      cancelText: recurrencyId ? 'Excluir este e os próximos' : 'Não',
+      onCancel() {
+        if (recurrencyId) {
+          deleteEntries(id, 'nexts', recurrencyId, recurrencyIndex)
+            .then(() => {
+              addToastSuccess('Lançamento excluído');
+            })
+            .catch(err => {
+              addToastError(err);
+            })
+            .finally(() => fetchAll());
+        } else {
+          A.Modal.destroyAll();
+        }
+      },
       onOk() {
-        deleteEntries(id)
+        deleteEntries(id, 'unique', null, null)
           .then(() => {
             addToastSuccess('Lançamento excluído');
           })
@@ -205,7 +241,9 @@ export function Expenses() {
             handleRealize(id, value, dueDate)
           }
           handleEdit={entriesValue => handleEdit(entriesValue)}
-          handleDelete={(id, title) => handleDelete(id, title)}
+          handleDelete={(id, title, recurrencyId, recurrencyIndex) => {
+            handleDelete(id, title, recurrencyId, recurrencyIndex);
+          }}
         />
       </A.Card>
 
@@ -321,6 +359,43 @@ export function Expenses() {
               ]}
             />
           </A.Form.Item>
+          <A.Form.Item
+            name="repeatType"
+            label="Repetir lançamento?"
+            rules={[yupSync]}
+          >
+            <A.Select
+              onChange={handleRecurrency}
+              showSearch
+              placeholder="Repetir lançamento?"
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                (option?.title ?? '').includes(input)
+              }
+              filterSort={(optionA, optionB) =>
+                (optionA?.title ?? '')
+                  .toLowerCase()
+                  .localeCompare((optionB?.title ?? '').toLowerCase())
+              }
+              options={[
+                {
+                  label: 'Fixa',
+                  value: 'recurrencyIlimited',
+                },
+                { label: 'Parcelada', value: 'installments' },
+                { label: 'Única', value: 'unique' },
+              ]}
+            />
+          </A.Form.Item>
+          {recurrency === 'installments' && (
+            <A.Form.Item
+              name="recurrencyTimes"
+              label="Quantas parcelas?"
+              rules={[yupSync]}
+            >
+              <A.InputNumber min={2} max={120} />
+            </A.Form.Item>
+          )}
           <A.Form.Item
             name="dueDate"
             label="Data de vencimento"
