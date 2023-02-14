@@ -112,6 +112,8 @@ export function Expenses() {
     subCategoriesId: yup.string(),
     dueDate: yup.string().required('Campo obrigatório'),
     realize: yup.boolean().required('Campo obrigatório'),
+    repeatType: yup.string().required('Campo obrigatório'),
+    recurrencyTimes: yup.number().required('Campo obrigatório'),
   });
 
   const yupSync = {
@@ -184,8 +186,9 @@ export function Expenses() {
     });
     handleShowModal('edit');
   }
-  function handleDelete(id, title) {
+  function handleDelete(id, title, recurrencyId, recurrencyIndex) {
     deleteModal({
+      closable: true,
       title: `Atenção`,
       icon: <I.ExclamationCircleFilled />,
       content: (
@@ -194,11 +197,25 @@ export function Expenses() {
           <strong>&ldquo;{title}&rdquo;</strong>?
         </p>
       ),
-      okText: 'Sim, excluir',
+      okText: recurrencyId ? 'Excluir apenas este' : 'Sim, excluir',
       okType: 'danger',
-      cancelText: 'Não',
+      cancelText: recurrencyId ? 'Excluir este e os próximos' : 'Não',
+      onCancel() {
+        if (recurrencyId) {
+          deleteEntries(id, 'nexts', recurrencyId, recurrencyIndex)
+            .then(() => {
+              addToastSuccess('Lançamento excluído');
+            })
+            .catch(err => {
+              addToastError(err);
+            })
+            .finally(() => fetchAll());
+        } else {
+          A.Modal.destroyAll();
+        }
+      },
       onOk() {
-        deleteEntries(id)
+        deleteEntries(id, 'unique', null, null)
           .then(() => {
             addToastSuccess('Lançamento excluído');
           })
@@ -224,7 +241,9 @@ export function Expenses() {
             handleRealize(id, value, dueDate)
           }
           handleEdit={entriesValue => handleEdit(entriesValue)}
-          handleDelete={(id, title) => handleDelete(id, title)}
+          handleDelete={(id, title, recurrencyId, recurrencyIndex) => {
+            handleDelete(id, title, recurrencyId, recurrencyIndex);
+          }}
         />
       </A.Card>
 

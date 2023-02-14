@@ -189,8 +189,33 @@ export function Incomes() {
     });
     handleShowModal('edit');
   }
-  function handleDelete(id, title) {
+  function handleDelete(id, title, recurrencyId, recurrencyIndex) {
+    function handleDeleteNextsOrNone() {
+      if (recurrencyId) {
+        deleteEntries(id, 'nexts', recurrencyId, recurrencyIndex)
+          .then(() => {
+            addToastSuccess('Lançamento excluído');
+          })
+          .catch(err => {
+            addToastError(err);
+          })
+          .finally(() => fetchAll());
+      }
+      A.Modal.destroyAll();
+    }
+    function handleDeleteUnique() {
+      deleteEntries(id, 'unique', null, null)
+        .then(() => {
+          addToastSuccess('Lançamento excluído');
+        })
+        .catch(err => {
+          addToastError(err);
+        })
+        .finally(() => fetchAll());
+      A.Modal.destroyAll();
+    }
     deleteModal({
+      closable: true,
       title: `Atenção`,
       icon: <I.ExclamationCircleFilled />,
       content: (
@@ -199,19 +224,24 @@ export function Incomes() {
           <strong>&ldquo;{title}&rdquo;</strong>?
         </p>
       ),
-      okText: 'Sim, excluir',
-      okType: 'danger',
-      cancelText: 'Não',
-      onOk() {
-        deleteEntries(id)
-          .then(() => {
-            addToastSuccess('Lançamento excluído');
-          })
-          .catch(err => {
-            addToastError(err);
-          })
-          .finally(() => fetchAll());
-      },
+      footer: [
+        <A.Space
+          direction="vertical"
+          style={{ marginTop: '20px', width: '100%' }}
+        >
+          <A.Button type="primary" block onClick={() => handleDeleteUnique()}>
+            {recurrencyId ? 'Excluir apenas este' : 'Sim, excluir'}
+          </A.Button>
+          <A.Button
+            type="primary"
+            danger
+            block
+            onClick={() => handleDeleteNextsOrNone()}
+          >
+            {recurrencyId ? 'Excluir este e os próximos' : 'Não'}
+          </A.Button>
+        </A.Space>,
+      ],
     });
   }
   return (
@@ -228,7 +258,9 @@ export function Incomes() {
             handleRealize(id, value, dueDate)
           }
           handleEdit={entriesValue => handleEdit(entriesValue)}
-          handleDelete={(id, title) => handleDelete(id, title)}
+          handleDelete={(id, title, recurrencyId, recurrencyIndex) => {
+            handleDelete(id, title, recurrencyId, recurrencyIndex);
+          }}
         />
       </A.Card>
 

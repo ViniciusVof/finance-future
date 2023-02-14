@@ -29,8 +29,16 @@ async function getIncomesEntries() {
   const { data } = await get(`entries/income`);
   return data;
 }
-async function deleteEntries(id) {
-  const { data } = await remove(`entries/${id}`);
+async function deleteEntries(
+  id,
+  deleteRecurrency,
+  recurrencyId,
+  recurrencyIndex
+) {
+  const mountURL = `${deleteRecurrency ? `/${deleteRecurrency}` : ''}${
+    recurrencyId ? `/${recurrencyId}` : ''
+  }${recurrencyIndex >= 0 ? `/${recurrencyIndex}` : ''}`;
+  const { data } = await remove(`entries/${id}${mountURL}`);
   return data;
 }
 export {

@@ -68,7 +68,16 @@ export function EntriesFlow({
               <A.Button
                 type="secondary"
                 icon={<I.DeleteOutlined />}
-                onClick={() => handleDelete(item.id, item.title)}
+                onClick={() => {
+                  // eslint-disable-next-line no-console
+                  console.log(item);
+                  handleDelete(
+                    item.id,
+                    item.title,
+                    item.recurrencyId,
+                    item.recurrencyIndex
+                  );
+                }}
               />,
             ]}
           >
